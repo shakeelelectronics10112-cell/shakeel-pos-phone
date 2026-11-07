@@ -1,0 +1,1591 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f3d2c">
+<meta name="robots" content="noindex">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Shakeel POS — Phone</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f3d2c'/%3E%3Ctext x='32' y='44' font-family='Arial' font-weight='900' font-size='34' text-anchor='middle' fill='%23f2c14e'%3ES%3C/text%3E%3C/svg%3E">
+<style>:root{--g:#0f3d2c;--g2:#165a40;--gold:#f2c14e;--ink:#15201b;--ink2:#4c5a54;--ink3:#7f8c86;--line:#e1e7e4;--bg:#f2f5f3;--card:#fff;--red:#c2352b;--redbg:#fdecea;--amber:#a86400;--amberbg:#fff4e0;--green:#16794a;--greenbg:#e6f5ec;--r:14px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.35 -apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+button,input,select{font:inherit;color:inherit}
+.hide{display:none!important}
+.boot{display:flex;align-items:center;justify-content:center;height:100vh;color:var(--ink3)}
+/* top bar */
+.top{position:sticky;top:0;z-index:5;background:var(--g);color:#fff;padding:calc(10px + env(safe-area-inset-top)) 12px 10px 16px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.top .t{flex:1;min-width:0}
+.top .shop{font-weight:800;font-size:17px;letter-spacing:.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .st{font-size:12px;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top .st.bad{color:#ffb4ab;opacity:1}
+.ib{background:rgba(255,255,255,.12);border:0;color:#fff;width:40px;height:40px;border-radius:12px;font-size:18px;display:flex;align-items:center;justify-content:center}
+.ib.spin{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+main{padding:12px 12px calc(84px + env(safe-area-inset-bottom));max-width:720px;margin:0 auto}
+/* bottom tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:#fff;border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+.tabs button{flex:1;border:0;background:none;padding:8px 2px 9px;font-size:11px;font-weight:600;color:var(--ink3);display:flex;flex-direction:column;align-items:center;gap:2px}
+.tabs button .i{font-size:20px;line-height:1.1;filter:grayscale(1);opacity:.7}
+.tabs button.on{color:var(--g)}.tabs button.on .i{filter:none;opacity:1}
+/* cards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:12px}
+.card h3{margin:0 0 10px;font-size:13px;letter-spacing:.8px;text-transform:uppercase;color:var(--ink2);display:flex;align-items:center;gap:8px}
+.card h3 .grow{flex:1}
+.h1{font-size:13px;font-weight:700;color:var(--ink2);margin:4px 2px 8px;letter-spacing:.6px;text-transform:uppercase}
+.kp{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.k{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 13px}
+.k .l{font-size:12px;color:var(--ink3);font-weight:600}
+.k .v{font-size:22px;font-weight:800;margin-top:2px;letter-spacing:-.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.k .s{font-size:12px;color:var(--ink3);margin-top:2px}
+.k.hero{background:var(--g);border-color:var(--g);color:#fff}.k.hero .l,.k.hero .s{color:rgba(255,255,255,.75)}
+.k.gold{background:#fff8e6;border-color:#f3dca0}
+.pos{color:var(--green)}.neg{color:var(--red)}.amb{color:var(--amber)}
+.row{display:flex;align-items:center;gap:10px}
+.grow{flex:1;min-width:0}
+.muted{color:var(--ink3)}.small{font-size:12.5px}.b{font-weight:700}
+.link{display:flex;align-items:center;gap:12px;padding:12px 2px;border-top:1px solid var(--line)}
+.link:first-of-type{border-top:0}
+.link .ic{font-size:22px;width:30px;text-align:center}
+.link .ar{color:var(--ink3);font-size:18px}
+/* lists */
+.list{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.li{display:flex;align-items:center;gap:10px;padding:11px 13px;border-top:1px solid var(--line)}
+.li:first-child{border-top:0}
+.li .n{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .sub{font-size:12.5px;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .r{text-align:right;flex-shrink:0}
+.li .q{font-size:19px;font-weight:800}
+.li.tap:active{background:#f3f6f4}
+.empty{padding:28px 14px;text-align:center;color:var(--ink3)}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:1px 7px;border-radius:999px;background:#eef2f0;color:var(--ink2);vertical-align:1px}
+.badge.r{background:var(--redbg);color:var(--red)}.badge.a{background:var(--amberbg);color:var(--amber)}.badge.g{background:var(--greenbg);color:var(--green)}.badge.d{background:#222;color:#fff}
+/* inputs */
+.in{width:100%;border:1px solid #cfd8d3;border-radius:12px;padding:11px 13px;background:#fff;outline:none;font-size:16px}
+.in:focus{border-color:var(--g2);box-shadow:0 0 0 3px rgba(22,90,64,.12)}
+.search{position:sticky;top:calc(62px + env(safe-area-inset-top));z-index:3;background:var(--bg);padding:2px 0 10px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding-bottom:10px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 13px;font-size:13px;font-weight:600;white-space:nowrap;color:var(--ink2)}
+.chip.on{background:var(--g);border-color:var(--g);color:#fff}
+.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:700;background:#e9eeeb;color:var(--ink)}
+.btn.pri{background:var(--g);color:#fff}.btn.gold{background:var(--gold);color:#3a2a00}.btn.sm{padding:7px 11px;font-size:13px;border-radius:10px}.btn.full{width:100%}
+.btn:disabled{opacity:.55}
+/* reminders */
+.nt{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.nt:first-child{border-top:0}
+.nt input{width:22px;height:22px;margin-top:1px;flex-shrink:0;accent-color:var(--g)}
+.nt .x{flex:1;min-width:0;white-space:pre-wrap;word-break:break-word;font-weight:600}
+.nt .x small{display:block;font-weight:400;color:var(--ink3);font-size:12px;margin-top:1px}
+.nt.wait .x{color:var(--ink2)}
+.addrow{display:flex;gap:8px;margin-bottom:6px}
+/* report rows */
+.rr{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--line)}
+.rr:first-child{border-top:0}
+.rr.big{font-size:17px;font-weight:800}
+.rr .v{font-weight:700;white-space:nowrap}
+/* bottom sheet */
+.sheet{position:fixed;inset:0;z-index:20;background:rgba(10,20,15,.45);display:flex;align-items:flex-end;justify-content:center}
+.sheet .pn{background:#fff;width:100%;max-width:720px;max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:8px 16px calc(18px + env(safe-area-inset-bottom));animation:up .18s ease-out}
+@keyframes up{from{transform:translateY(40px);opacity:.5}to{transform:none;opacity:1}}
+.sheet .grab{width:44px;height:5px;border-radius:9px;background:#d5dcd8;margin:4px auto 10px}
+.sheet h2{margin:0 0 2px;font-size:19px}
+.sheet .tbl{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px}
+.sheet .tbl td{padding:7px 0;border-top:1px solid var(--line);vertical-align:top}
+.sheet .tbl td.n{text-align:right;white-space:nowrap;padding-left:10px}
+.sheet .tbl tr.tot td{font-weight:800;border-top:2px solid var(--ink)}
+.place{display:flex;justify-content:space-between;padding:9px 12px;border:1px solid var(--line);border-radius:12px;margin-top:6px}
+.place b{font-size:17px}
+/* login */
+.login{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:24px 20px calc(24px + env(safe-area-inset-bottom));max-width:440px;margin:0 auto}
+.login .logo{width:64px;height:64px;border-radius:18px;background:var(--g);color:var(--gold);font-weight:900;font-size:34px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.login h1{margin:0 0 4px;font-size:24px}
+.login p{color:var(--ink2);margin:0 0 18px}
+.login label{display:block;font-size:13px;font-weight:700;color:var(--ink2);margin:12px 0 6px}
+.login .ok{background:var(--greenbg);color:var(--green);border-radius:12px;padding:10px 12px;font-weight:600;font-size:14px}
+.login .err{background:var(--redbg);color:var(--red);border-radius:12px;padding:10px 12px;font-weight:600;font-size:14px;margin-top:12px}
+.banner{border-radius:12px;padding:10px 12px;font-size:13.5px;margin-bottom:12px;background:var(--amberbg);color:#6b4300;font-weight:600}
+.banner.r{background:var(--redbg);color:var(--red)}
+/* toasts */
+#toasts{position:fixed;left:12px;right:12px;bottom:calc(84px + env(safe-area-inset-bottom));z-index:30;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+.toast{background:#1d2a24;color:#fff;border-radius:12px;padding:11px 15px;font-weight:600;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.25);max-width:520px}
+.toast.err{background:var(--red)}
+.menu{position:absolute;right:10px;top:calc(56px + env(safe-area-inset-top));background:#fff;color:var(--ink);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.2);overflow:hidden;z-index:10;min-width:220px}
+.menu button{display:block;width:100%;text-align:left;border:0;background:none;padding:13px 16px;font-weight:600;border-top:1px solid var(--line)}
+.menu button:first-child{border-top:0}
+.menu .dan{color:var(--red)}
+</style>
+</head>
+<body>
+<div id="app"><div class="boot">Loading…</div></div>
+<div id="sheet" class="sheet hide"></div>
+<div id="toasts"></div>
+<script>'use strict';
+/* ================= Shakeel POS — core ================= */
+const APP = { name: 'Shakeel POS', ver: '2.0.0', dbName: 'ShakeelPOS', dbVer: 2, sig: 'ShakeelPOS' };
+const STORES = ['items', 'customers', 'sales', 'returns', 'moves', 'stockins', 'payments', 'expenses', 'holds', 'parcels'];
+
+/* ---------- small helpers ---------- */
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+let _seq = 0;
+const uid = () => Date.now().toString(36) + (++_seq % 1296).toString(36).padStart(2, '0') + Math.random().toString(36).slice(2, 9);
+const r2 = n => Math.round(((+n) || 0) * 100) / 100;
+const num = v => { const n = parseFloat(String(v ?? '').replace(/[, ]/g, '')); return isFinite(n) ? n : 0; };
+function fmt(n) {
+  n = r2(n); const neg = n < 0; const a = Math.abs(n);
+  const s = a.toLocaleString('en-US', { minimumFractionDigits: a % 1 ? 2 : 0, maximumFractionDigits: 2 });
+  return (neg ? '-' : '') + s;
+}
+const rs = n => 'Rs ' + fmt(n);
+const rs0 = n => 'Rs ' + Math.round(+n || 0).toLocaleString('en-US'); // whole rupees for big summary numbers
+const qf = n => fmt(n); // quantity
+const pad = n => String(n).padStart(2, '0');
+function dayKey(ts = Date.now()) { const d = new Date(ts); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function keyToDate(k) { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); }
+function addDays(k, n) { const d = keyToDate(k); d.setDate(d.getDate() + n); return dayKey(d.getTime()); }
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function fmtDate(ts) { const d = typeof ts === 'string' ? keyToDate(ts) : new Date(ts); return pad(d.getDate()) + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear(); }
+function fmtTime(ts) { const d = new Date(ts); let h = d.getHours(); const ap = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12; return h + ':' + pad(d.getMinutes()) + ' ' + ap; }
+const fmtDT = ts => fmtDate(ts) + ', ' + fmtTime(ts);
+function tsFromKey(k, refTs) { // keep time-of-day, change the date
+  const d = keyToDate(k); const r = new Date(refTs || Date.now()); d.setHours(r.getHours(), r.getMinutes(), r.getSeconds(), r.getMilliseconds()); return d.getTime();
+}
+const lc = s => String(s || '').toLowerCase();
+function waPhone(p) {
+  let d = String(p || '').replace(/\D/g, '');
+  if (!d) return '';
+  if (d.startsWith('0092')) d = d.slice(2);
+  if (d.length === 11 && d.startsWith('0')) d = '92' + d.slice(1);
+  if (d.length === 10 && d.startsWith('3')) d = '92' + d;
+  return d;
+}
+function openWA(phone, text) {
+  const p = waPhone(phone);
+  if (S.settings && S.settings.waApp) { // straight into the WhatsApp Desktop app
+    const a = document.createElement('a'); a.href = 'whatsapp://send?' + (p ? 'phone=' + p + '&' : '') + 'text=' + encodeURIComponent(text);
+    document.body.appendChild(a); a.click(); a.remove(); return;
+  }
+  window.open('https://wa.me/' + (p || '') + '?text=' + encodeURIComponent(text), '_blank');
+}
+function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+
+/* ---------- database (IndexedDB) ---------- */
+const DB = {
+  db: null,
+  open() {
+    return new Promise((res, rej) => {
+      const rq = indexedDB.open(APP.dbName, APP.dbVer);
+      rq.onupgradeneeded = () => {
+        const db = rq.result;
+        if (!db.objectStoreNames.contains('meta')) db.createObjectStore('meta', { keyPath: 'k' });
+        for (const s of STORES) if (!db.objectStoreNames.contains(s)) db.createObjectStore(s, { keyPath: 'id' });
+      };
+      rq.onsuccess = () => {
+        this.db = rq.result;
+        this.db.onversionchange = () => { this.db.close(); alert('Shakeel POS was updated in another window. Please reload this page.'); };
+        res(this.db);
+      };
+      rq.onerror = () => rej(rq.error);
+      rq.onblocked = () => rej(new Error('Database is blocked by another open window. Close other Shakeel POS windows and reload.'));
+    });
+  },
+  all(store) {
+    return new Promise((res, rej) => {
+      const rq = this.db.transaction(store, 'readonly').objectStore(store).getAll();
+      rq.onsuccess = () => res(rq.result); rq.onerror = () => rej(rq.error);
+    });
+  },
+  /* ops: [{s, put}|{s, del}|{s, clear:true}] — ONE transaction: everything is saved, or nothing is */
+  write(ops) {
+    return new Promise((res, rej) => {
+      const names = [...new Set(ops.map(o => o.s))];
+      if (!names.length) return res();
+      let t;
+      try { t = this.db.transaction(names, 'readwrite', { durability: 'strict' }); } catch (e) { return rej(e); }
+      try {
+        for (const o of ops) {
+          const st = t.objectStore(o.s);
+          if (o.clear) st.clear(); else if (o.del !== undefined) st.delete(o.del); else st.put(o.put);
+        }
+      } catch (e) { try { t.abort(); } catch (_) { } return rej(e); }
+      t.oncomplete = () => res();
+      t.onerror = () => rej(t.error || new Error('Save failed'));
+      t.onabort = () => rej(t.error || new Error('Save was cancelled'));
+    });
+  }
+};
+
+/* ---------- state ---------- */
+const S = {
+  settings: null, counters: null, backup: {}, dir: null,
+  items: new Map(), customers: new Map(), sales: new Map(), returns: new Map(), moves: new Map(),
+  stockins: new Map(), payments: new Map(), expenses: new Map(), holds: new Map(), parcels: new Map(),
+  ix: { retBySale: new Map(), lastPrice: new Map() }
+};
+const DEFAULT_CATS = ['TCON Board', 'COF / TAB IC', 'Main Board / Scaler', 'LVDS Cable', 'ACF Tape', 'Backlight Strip', 'Power Board', 'Remote', 'Panel / Display', 'Tools', 'Other'];
+const EXP_CATS = ['Rent', 'Electricity', 'Salary', 'Tea / Food', 'Transport', 'Courier', 'Mobile / Internet', 'Repair', 'Packing', 'Other'];
+function defaultSettings() {
+  return {
+    shop: 'SHAKEEL ELECTRONICS', tagline: 'YOUR TRUSTED ELECTRONICS PARTNER', address: 'Faisalabad, Pakistan', phone: '',
+    footer: 'Thank you for your business!', accounts: '', logo: '',
+    paper: '80', receiptFont: 12, printAfterSave: true, showBalanceOnReceipt: true, receiptBold: true,
+    allowNegative: false, lowDefault: 3, waApp: false,
+    courier: 'TCS', shipSize: '4x6', itemSize: '3x1in', boxSize: '3x1in', sizesV2: true, locV2: true, reserveBoxes: null, labelPrice: false, shipCOD: false, shipCN: false, courierAccounts: { TCS: '' }, trackLinks: { TCS: 'https://www.tcsexpress.com/track/{cn}' }, dealerAuto: true, pinHash: '', showCost: false,
+    categories: DEFAULT_CATS.slice(), expenseCats: EXP_CATS.slice(), started: Date.now()
+  };
+}
+const defaultCounters = () => ({ bill: 1000, ret: 0, sin: 0, pay: 0, parcel: 0, sku: 0 });
+
+async function loadAll() {
+  for (const s of STORES) { const rows = await DB.all(s); S[s] = new Map(rows.map(r => [r.id, r])); }
+  const meta = await DB.all('meta');
+  const m = Object.fromEntries(meta.map(x => [x.k, x.v]));
+  S.settings = Object.assign(defaultSettings(), m.settings || {});
+  S.counters = Object.assign(defaultCounters(), m.counters || {});
+  S.backup = m.backup || {};
+  S.dir = m.dir || null;
+  S.notes = Array.isArray(m.notes) ? m.notes : []; // parcel reminders
+  S.isNew = !m.settings;
+  S.oldSizes = !!m.settings && !m.settings.sizesV2;
+  S.oldLoc = !!m.settings && !m.settings.locV2; // items made before main box / sub box / reserve boxes // shop made before 3x1 inch stickers / 4x6 inch parcels became the sizes
+  rebuildIndexes();
+}
+function rebuildIndexes() {
+  const rb = new Map();
+  for (const r of S.returns.values()) { if (!rb.has(r.saleId)) rb.set(r.saleId, []); rb.get(r.saleId).push(r); }
+  for (const a of rb.values()) a.sort((x, y) => x.ts - y.ts);
+  const lp = new Map();
+  const sales = [...S.sales.values()].filter(s => !s.void && s.custId).sort((a, b) => a.ts - b.ts);
+  for (const s of sales) for (const l of s.lines) if (l.itemId) lp.set(s.custId + '|' + l.itemId, { price: l.price, ts: s.ts, no: s.no });
+  S.ix = { retBySale: rb, lastPrice: lp };
+}
+
+/* every change goes through this queue: one at a time, atomic, memory updated only after the disk says OK */
+let _q = Promise.resolve();
+const Bus = { subs: [], on(fn) { this.subs.push(fn); }, emit(ops) { for (const f of this.subs) try { f(ops); } catch (e) { console.error(e); } } };
+function commit(build) { // build() returns ops[] or {ops, ...anything}; resolves with what build returned
+  const p = _q.then(async () => {
+    const r = await build();
+    const ops = Array.isArray(r) ? r : (r && r.ops) || [];
+    if (!ops.length) return r;
+    await DB.write(ops);
+    applyOps(ops);
+    Bus.emit(ops);
+    return r;
+  });
+  _q = p.catch(() => { });
+  return p;
+}
+function applyOps(ops) {
+  for (const o of ops) {
+    if (o.s === 'meta') {
+      const k = o.put.k, v = o.put.v;
+      if (k === 'settings') S.settings = v; else if (k === 'counters') S.counters = v; else if (k === 'backup') S.backup = v; else if (k === 'dir') S.dir = v; else if (k === 'notes') S.notes = v;
+      continue;
+    }
+    const m = S[o.s];
+    if (o.clear) m.clear(); else if (o.del !== undefined) m.delete(o.del); else m.set(o.put.id, o.put);
+  }
+  rebuildIndexes();
+}
+const metaPut = (k, v) => ({ s: 'meta', put: { k, v } });
+function saveSettings(patch) {
+  return commit(() => [metaPut('settings', Object.assign({}, S.settings, patch))]);
+}
+
+/* ---------- single window guard ---------- */
+function singleWindow() {
+  if (!navigator.locks) return Promise.resolve(true);
+  return new Promise(res => {
+    navigator.locks.request('shakeelpos-main-window', { ifAvailable: true }, lock => {
+      if (!lock) { res(false); return; }
+      res(true);
+      return new Promise(() => { }); // hold the lock while this window is open
+    }).catch(() => res(true));
+  });
+}
+
+/* ---------- owner PIN ---------- */
+async function hashPin(pin) {
+  const txt = 'shakeelpos::' + pin;
+  try {
+    const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(txt));
+    return [...new Uint8Array(b)].map(x => x.toString(16).padStart(2, '0')).join('');
+  } catch (e) { let h = 5381; for (const c of txt) h = ((h << 5) + h + c.charCodeAt(0)) | 0; return 'd' + (h >>> 0).toString(16); }
+}
+const Owner = {
+  unlocked: false,
+  get on() { return !S.settings.pinHash || this.unlocked; },
+  async ask(why) {
+    if (this.on) return true;
+    const pin = await UI.prompt('Owner PIN', why || 'Enter the owner PIN', { type: 'password', ok: 'Unlock' });
+    if (pin == null) return false;
+    if (await hashPin(pin) === S.settings.pinHash) { this.unlocked = true; App.chrome(); App.refresh(true); toast('Unlocked'); return true; }
+    toast('Wrong PIN', 'err'); return false;
+  },
+  lock() { this.unlocked = false; App.chrome(); App.refresh(true); toast('Locked — cost and profit are hidden'); }
+};
+
+/* ---------- backup ---------- */
+const Backup = {
+  timer: null, state: 'idle', err: '', dirty: false, ver: 0, busy: false, lastWrite: 0,
+  GAP: 3 * 60e3, // at most one folder write every 3 minutes (keeps cloud uploads light); the PC's own copy is saved instantly anyway
+  supported: typeof window.showDirectoryPicker === 'function',
+  schedule() {
+    this.dirty = true; this.ver++;
+    if (this.timer) return;
+    const wait = Math.max(4000, this.lastWrite + this.GAP - Date.now());
+    this.timer = setTimeout(() => { this.timer = null; this.auto(); }, wait);
+  },
+  flush() { if (this.dirty && S.dir && this.state === 'ok') { clearTimeout(this.timer); this.timer = null; this.auto(); } },
+  snapshot() {
+    const o = { app: APP.sig, ver: APP.ver, schema: 1, at: Date.now(), settings: S.settings, counters: S.counters, notes: S.notes || [] };
+    for (const s of STORES) o[s] = [...S[s].values()];
+    return o;
+  },
+  async permission(ask) {
+    if (!S.dir) return 'none';
+    try {
+      let p = await S.dir.queryPermission({ mode: 'readwrite' });
+      if (p !== 'granted' && ask) p = await S.dir.requestPermission({ mode: 'readwrite' });
+      return p;
+    } catch (e) { return 'error'; }
+  },
+  async auto() {
+    if (!S.dir) { this.state = 'nofolder'; App.chrome(); return; }
+    const p = await this.permission(false);
+    if (p !== 'granted') { this.state = 'needperm'; App.chrome(); return; }
+    try { await this.toFolder(); } catch (e) { this.state = 'error'; this.err = e.message || String(e); App.chrome(); }
+  },
+  async gzip(text) {
+    if (typeof CompressionStream === 'undefined') return null;
+    return await new Response(new Blob([text]).stream().pipeThrough(new CompressionStream('gzip'))).blob();
+  },
+  async writeFile(name, data) {
+    const fh = await S.dir.getFileHandle(name, { create: true });
+    const w = await fh.createWritable(); // writes to a temp copy, swapped in only when complete
+    await w.write(data); await w.close();
+  },
+  async toFolder(extraName) {
+    if (this.busy) { this.dirty = true; return; }
+    this.busy = true; const startVer = this.ver;
+    try {
+      const json = JSON.stringify(this.snapshot());
+      const gz = await this.gzip(json); // ~10x smaller = quick uploads to Google Drive / OneDrive
+      const ext = gz ? '.json.gz' : '.json', data = gz || json;
+      await this.writeFile('ShakeelPOS-latest' + ext, data);
+      await this.writeFile('ShakeelPOS-' + dayKey() + ext, data);
+      if (extraName) await this.writeFile(extraName + ext, data);
+      if (gz) { try { await S.dir.removeEntry('ShakeelPOS-latest.json'); } catch (e) { } } // no stale uncompressed copy
+      this.lastWrite = Date.now();
+      await this.mark({ last: this.lastWrite, lastFolder: this.lastWrite, lastSize: gz ? gz.size : json.length });
+      this.state = 'ok'; this.err = '';
+      if (this.ver === startVer) this.dirty = false; else this.schedule(); // something changed while writing
+      this.prune();
+    } finally { this.busy = false; App.chrome(); }
+  },
+  async prune() { // keep every day for 60 days, and the 1st of every month for ever
+    const today = dayKey(); if (S.backup.pruned === today || !S.dir || !S.dir.entries) return;
+    try {
+      const cut = addDays(today, -60), old = [];
+      for await (const [name] of S.dir.entries()) {
+        const m = /^ShakeelPOS-(\d{4}-\d{2}-\d{2})\.json(\.gz)?$/.exec(name);
+        if (m && m[1] < cut && m[1].slice(8) !== '01') old.push(name);
+      }
+      for (const n of old) await S.dir.removeEntry(n);
+      await this.mark({ pruned: today });
+    } catch (e) { console.warn('prune', e); }
+  },
+  async mark(patch) {
+    const v = Object.assign({}, S.backup, patch);
+    try { await DB.write([metaPut('backup', v)]); S.backup = v; } catch (e) { console.warn(e); }
+  },
+  download(tag) {
+    const json = JSON.stringify(this.snapshot(), null, 0);
+    const d = new Date();
+    const name = 'ShakeelPOS-backup-' + dayKey() + '-' + pad(d.getHours()) + pad(d.getMinutes()) + (tag ? '-' + tag : '') + '.json';
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+    a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+    this.mark({ last: Date.now(), lastDownload: Date.now() }).then(() => App.chrome());
+    return name;
+  },
+  async chooseFolder() {
+    if (!this.supported) { toast('This browser cannot save to a folder. Use Chrome or Edge, or use "Download backup".', 'warn'); return; }
+    try {
+      const h = await window.showDirectoryPicker({ id: 'shakeelpos-backup', mode: 'readwrite', startIn: 'documents' });
+      await DB.write([metaPut('dir', h)]); S.dir = h;
+      await this.mark({ folderName: h.name });
+      await this.toFolder();
+      toast('Auto-backup is ON → folder "' + h.name + '"');
+    } catch (e) { if (e && e.name !== 'AbortError') toast('Could not use that folder: ' + e.message, 'err'); }
+    App.chrome(); App.refresh(true);
+  },
+  async reconnect() {
+    const p = await this.permission(true);
+    if (p === 'granted') { try { await this.toFolder(); toast('Auto-backup reconnected'); } catch (e) { toast('Backup failed: ' + e.message, 'err'); } }
+    else toast('Permission not given — auto-backup is paused', 'warn');
+    App.chrome(); App.refresh(true);
+  },
+  status() {
+    const last = S.backup.last || 0; const age = Date.now() - last;
+    if (S.dir && this.state === 'ok') return { cls: 'ok', text: 'Auto-backup ON', tip: 'Last saved to folder "' + (S.backup.folderName || (S.dir && S.dir.name) || '') + '" at ' + fmtTime(S.backup.lastFolder) + (this.dirty ? ' — new changes will be saved within 3 minutes' : ' — up to date') };
+    if (S.dir && this.state === 'needperm') return { cls: 'bad', text: 'Click to turn on backup', tip: 'The browser needs your OK once to keep saving backups to your folder' };
+    if (S.dir && this.state === 'error') return { cls: 'bad', text: 'Backup error', tip: this.err };
+    if (!last) return { cls: 'bad', text: 'No backup yet', tip: 'Set up a backup folder in Settings' };
+    if (age < 864e5) return { cls: 'ok', text: 'Backed up ' + fmtTime(last), tip: '' };
+    if (age < 7 * 864e5) return { cls: 'warn', text: 'Backup ' + Math.floor(age / 864e5) + 'd old', tip: '' };
+    return { cls: 'bad', text: 'Backup ' + Math.floor(age / 864e5) + 'd old', tip: '' };
+  }
+};
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'hidden') Backup.flush(); }); // window minimised/closing → save now
+Bus.on(() => Backup.schedule());
+
+async function readBackupFile(file) { // accepts .json and the compressed .json.gz written to the backup folder
+  const buf = new Uint8Array(await file.arrayBuffer());
+  if (buf[0] === 0x1f && buf[1] === 0x8b) {
+    if (typeof DecompressionStream === 'undefined') throw new Error('This browser cannot open .gz backups. Use Chrome or Edge.');
+    return JSON.parse(await new Response(new Blob([buf]).stream().pipeThrough(new DecompressionStream('gzip'))).text());
+  }
+  return JSON.parse(new TextDecoder().decode(buf).replace(/^\ufeff/, ''));
+}
+function validateBackup(o) {
+  if (!o || o.app !== APP.sig) return 'This is not a Shakeel POS backup file.';
+  for (const s of ['items', 'customers', 'sales']) if (!Array.isArray(o[s])) return 'Backup file is incomplete (' + s + ' missing).';
+  return '';
+}
+async function restoreBackup(o) {
+  const ops = [];
+  for (const s of STORES) ops.push({ s, clear: true });
+  ops.push(metaPut('settings', Object.assign(defaultSettings(), o.settings || {})));
+  ops.push(metaPut('counters', Object.assign(defaultCounters(), o.counters || {})));
+  ops.push(metaPut('notes', Array.isArray(o.notes) ? o.notes : []));
+  for (const s of STORES) for (const r of (o[s] || [])) if (r && r.id) ops.push({ s, put: r });
+  await DB.write(ops); // all-or-nothing
+}
+
+/* ---------- draft (unsaved bill survives a crash/close) ---------- */
+const Draft = {
+  key: 'shakeelpos:draft',
+  save(c) { try { if (c && c.lines.length) localStorage.setItem(this.key, JSON.stringify(c)); else localStorage.removeItem(this.key); } catch (e) { } },
+  load() { try { return JSON.parse(localStorage.getItem(this.key) || 'null'); } catch (e) { return null; } },
+  clear() { try { localStorage.removeItem(this.key); } catch (e) { } }
+};
+
+/* ---------- CSV ---------- */
+function toCSV(rows) {
+  return '﻿' + rows.map(r => r.map(v => {
+    const s = v == null ? '' : String(v);
+    return /[",\n\r]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }).join(',')).join('\r\n');
+}
+function downloadText(name, text, type = 'text/csv') {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([text], { type })); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+}
+function parseCSV(text) {
+  text = text.replace(/^﻿/, '');
+  const first = text.split(/\r?\n/)[0] || '';
+  const delim = (first.match(/\t/g) || []).length > (first.match(/,/g) || []).length ? '\t' : (first.match(/;/g) || []).length > (first.match(/,/g) || []).length ? ';' : ',';
+  const rows = []; let row = [], f = '', q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) { if (c === '"') { if (text[i + 1] === '"') { f += '"'; i++; } else q = false; } else f += c; }
+    else if (c === '"') q = true;
+    else if (c === delim) { row.push(f); f = ''; }
+    else if (c === '\n' || c === '\r') { if (c === '\r' && text[i + 1] === '\n') i++; row.push(f); rows.push(row); row = []; f = ''; }
+    else f += c;
+  }
+  if (f !== '' || row.length) { row.push(f); rows.push(row); }
+  return rows.filter(r => r.some(v => String(v).trim() !== ''));
+}
+function readFileText(file) { return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsText(file); }); }
+function pickFile(accept) {
+  return new Promise(res => {
+    const i = document.createElement('input'); i.type = 'file'; i.accept = accept || '';
+    i.onchange = () => res(i.files[0] || null); i.click();
+  });
+}
+
+/* ================= Shakeel POS — business rules =================
+   Every builder returns a list of database operations. They NEVER change S directly:
+   memory is only updated after the whole set is safely on disk (see commit()). */
+
+/* ---------- where an item is kept: main box + sub box, and optional reserve boxes with their own pieces ----------
+   it.box / it.sub = main place;  it.res = [{box, sub, qty}] = reserve places;  it.qty = ALL pieces.
+   Pieces in the main box = it.qty − reserve pieces. Selling takes from the main box first, then the reserve. */
+const PLACE_SEP = ' › ';
+const normText = s => String(s ?? '').replace(/\s+/g, ' ').trim();
+const placeOf = (box, sub) => [normText(box), normText(sub)].filter(Boolean).join(PLACE_SEP);
+function splitPlace(s) {
+  s = normText(s); const m = s.match(/^(.*?)\s*(?:›|>)\s*(.+)$/);
+  return m ? { box: m[1].trim(), sub: m[2].trim() } : { box: s, sub: '' };
+}
+const resList = it => (it && Array.isArray(it.res) ? it.res : []);
+const resTotal = it => r2(resList(it).reduce((a, r) => a + num(r.qty), 0));
+const mainQty = it => r2(num(it.qty) - resTotal(it));
+const mainPlace = it => placeOf(it.box, it.sub);
+function itemPlaces(it) {
+  const out = [{ kind: 'main', idx: -1, place: mainPlace(it), qty: mainQty(it) }];
+  resList(it).forEach((r, i) => out.push({ kind: 'res', idx: i, place: placeOf(r.box, r.sub), qty: r2(num(r.qty)) }));
+  return out;
+}
+function placeText(it, withQty) {
+  const m = mainPlace(it), rs = resList(it).filter(r => r.box || r.sub);
+  if (!rs.length) return m;
+  return (m || 'no main box') + (withQty ? ' (' + qf(mainQty(it)) + ')' : '') + ' · Reserve: ' + rs.map(r => placeOf(r.box, r.sub) + ' (' + qf(r.qty) + ')').join(', ');
+}
+function fixRes(it) { // reserve pieces can never be more than all pieces; take the difference out of the reserve
+  const rs = resList(it).map(r => ({ box: normText(r.box), sub: normText(r.sub), qty: r2(Math.max(0, num(r.qty))) })).filter(r => r.box || r.sub || r.qty);
+  let over = r2(rs.reduce((a, r) => a + r.qty, 0) - Math.max(0, num(it.qty)));
+  for (let i = rs.length - 1; i >= 0 && over > 0; i--) { const t = Math.min(over, rs[i].qty); rs[i].qty = r2(rs[i].qty - t); over = r2(over - t); }
+  it.res = rs;
+  return it;
+}
+const putItem = it => ({ s: 'items', put: fixRes(it) });
+function migrateLocations() { // older versions kept one text "Box" (and v1.7 joined places with " | ")
+  const ops = [];
+  for (const it0 of S.items.values()) {
+    if (it0.sub !== undefined) continue;
+    const it = { ...it0 }, parts = String(it.box || '').split(' | ').map(normText).filter(Boolean);
+    const qmap = {}, mt = /Pieces by place: (.*)$/.exec(it.note || '');
+    if (mt) for (const seg of mt[1].split(', ')) { const k = seg.lastIndexOf(' = '); if (k > 0) qmap[seg.slice(0, k)] = num(seg.slice(k + 3)); }
+    let mi = parts.findIndex(pl => !RESERVE_GUESS.test(splitPlace(pl).box)); if (mi < 0) mi = 0;
+    const mp = splitPlace(parts[mi] || '');
+    it.box = mp.box; it.sub = mp.sub;
+    it.res = parts.filter((_, i) => i !== mi).map(pl => ({ ...splitPlace(pl), qty: qmap[pl] || 0 }));
+    if (mt) it.note = normText(String(it.note).replace(/\s*·?\s*Pieces by place: .*$/, ''));
+    ops.push(putItem(it));
+  }
+  return ops;
+}
+const RESERVE_GUESS = /(plastic|disposable|catton|carton|cartoon|reserve|reel|godown|store ?room|extra)/i;
+const needsRefill = it => it.active !== false && resTotal(it) > 0 && mainQty(it) <= lowLevel(it); // main box low, reserve has stock
+const MOVE_LABEL = {
+  open: 'Opening stock', in: 'Stock in', sale: 'Sold', return: 'Returned to stock', retdmg: 'Returned damaged (loss)',
+  damage: 'Damaged / lost', adjust: 'Stock count', move: 'Moved between boxes', edit: 'Bill edited', void: 'Bill cancelled', price: 'Price changed', import: 'Imported'
+};
+const METHODS = { cash: 'Cash', easypaisa: 'Easypaisa', jazzcash: 'JazzCash', bank: 'Bank', account: 'Customer account' };
+const CUST_TYPES = { retail: 'Retail', dealer: 'Dealer', tech: 'Technician' };
+const usesDealer = c => !!c && (c.type === 'dealer' || c.type === 'tech');
+
+function mv(ts, itemId, type, qty, extra) {
+  return { s: 'moves', put: Object.assign({ id: uid(), ts, day: dayKey(ts), itemId, type, qty: r2(qty) }, extra) };
+}
+function addStock(it, q, cost) { // q > 0 → moving average cost
+  const cur = num(it.qty), nq = r2(cur + q);
+  if (cost > 0) it.cost = cur <= 0 || nq <= 0 ? r2(cost) : r2((cur * num(it.cost) + q * cost) / nq);
+  it.qty = nq;
+}
+const itemOrFail = id => { const it = S.items.get(id); if (!it) throw new Error('An item on this bill no longer exists. Remove it and add again.'); return { ...it }; };
+
+/* ---------- totals for a bill being made ---------- */
+function cartTotals(c) {
+  const lines = c.lines.map(l => ({ ...l, qty: r2(num(l.qty)), price: r2(num(l.price)) }));
+  const sub = r2(lines.reduce((a, l) => a + l.qty * l.price, 0));
+  let disc = c.discMode === '%' ? r2(sub * num(c.disc) / 100) : r2(num(c.disc));
+  disc = Math.min(Math.max(disc, 0), sub);
+  const deliv = r2(Math.max(0, num(c.deliv)));
+  const total = r2(sub - disc + deliv);
+  const tenderBlank = String(c.recv ?? '').trim() === '';
+  const tender = tenderBlank ? total : r2(Math.max(0, num(c.recv)));
+  const recv = r2(Math.min(tender, total));
+  const change = r2(Math.max(0, tender - total));
+  const credit = r2(total - recv);
+  const qty = r2(lines.reduce((a, l) => a + l.qty, 0));
+  return { lines, sub, disc, deliv, total, tender, recv, change, credit, tenderBlank, qty };
+}
+function allocDiscount(lines, sub, disc) {
+  let lastPos = -1; lines.forEach((l, i) => { if (l.qty * l.price > 0) lastPos = i; });
+  let left = disc;
+  return lines.map((l, i) => {
+    const amt = r2(l.qty * l.price);
+    let share = sub > 0 && amt > 0 ? r2(disc * amt / sub) : 0;
+    if (i === lastPos) share = r2(left);
+    left = r2(left - share);
+    const netAmt = r2(amt - share);
+    return { ...l, amt, netAmt, net: l.qty ? netAmt / l.qty : 0 };
+  });
+}
+function cleanLines(T, keepCostLines) {
+  return allocDiscount(T.lines, T.sub, T.disc).map(l => {
+    const it = l.itemId ? S.items.get(l.itemId) : null;
+    const cost = l.keepCost ? r2(num(l.cost)) : it ? r2(num(it.cost)) : r2(num(l.cost));
+    return { itemId: l.itemId || null, name: l.name, code: l.code || '', qty: l.qty, price: l.price, amt: l.amt, netAmt: l.netAmt, net: l.net, cost };
+  });
+}
+
+/* ---------- sale ---------- */
+function buildSale(cart, o = {}) {
+  const T = cartTotals(cart);
+  const ts = o.ts || Date.now(), day = dayKey(ts);
+  const counters = { ...S.counters, bill: S.counters.bill + 1 };
+  const no = counters.bill, id = uid();
+  const cust = cart.custId ? S.customers.get(cart.custId) : null;
+  const lines = cleanLines(T);
+  const ops = [], items = new Map();
+  for (const l of lines) {
+    if (!l.itemId) continue;
+    const it = items.get(l.itemId) || itemOrFail(l.itemId);
+    it.qty = r2(num(it.qty) - l.qty); it.lastSold = ts; it.updated = ts;
+    items.set(it.id, it);
+    ops.push(mv(ts, it.id, 'sale', -l.qty, { cost: l.cost, price: r2(l.net), ref: 'Bill #' + no, refId: id, party: cust ? cust.name : 'Walk-in', after: it.qty }));
+  }
+  for (const it of items.values()) ops.push(putItem(it));
+  const sale = {
+    id, no, ts, day, custId: cust ? cust.id : null, custName: cust ? cust.name : 'Walk-in', custPhone: cust ? cust.phone || '' : '',
+    lines, sub: T.sub, disc: T.disc, discLabel: cart.discMode === '%' && num(cart.disc) ? num(cart.disc) + '%' : '',
+    deliv: T.deliv, total: T.total, tender: T.tender, recv: T.recv, change: T.change, credit: T.credit,
+    method: cart.method || 'cash', note: (cart.note || '').trim(),
+    prevBal: cust ? custBalance(cust.id) : 0
+  };
+  ops.push({ s: 'sales', put: sale }, metaPut('counters', counters));
+  if (cart.holdId && S.holds.has(cart.holdId)) ops.push({ s: 'holds', del: cart.holdId });
+  return { ops, sale };
+}
+
+/* ---------- edit an existing bill (same number) ---------- */
+function buildEdit(saleId, cart) {
+  const old = S.sales.get(saleId);
+  if (!old) throw new Error('Bill not found');
+  if (old.void) throw new Error('This bill was cancelled and cannot be edited');
+  if ((S.ix.retBySale.get(saleId) || []).length) throw new Error('This bill has returns, so it cannot be edited. Use Return instead.');
+  const T = cartTotals(cart), ts = Date.now();
+  const cust = cart.custId ? S.customers.get(cart.custId) : null;
+  const lines = cleanLines(T);
+  const oldQ = new Map(), newQ = new Map(), costOf = new Map();
+  for (const l of old.lines) if (l.itemId) { oldQ.set(l.itemId, r2((oldQ.get(l.itemId) || 0) + l.qty)); costOf.set(l.itemId, l.cost); }
+  for (const l of lines) if (l.itemId) { newQ.set(l.itemId, r2((newQ.get(l.itemId) || 0) + l.qty)); if (!costOf.has(l.itemId)) costOf.set(l.itemId, l.cost); }
+  const ops = [];
+  for (const itemId of new Set([...oldQ.keys(), ...newQ.keys()])) {
+    const diff = r2((newQ.get(itemId) || 0) - (oldQ.get(itemId) || 0)); // + means more sold now
+    if (!diff) continue;
+    const it = S.items.get(itemId); if (!it) continue;
+    const c = { ...it };
+    if (diff < 0) addStock(c, -diff, costOf.get(itemId)); else c.qty = r2(num(c.qty) - diff);
+    c.updated = ts;
+    ops.push(putItem(c));
+    ops.push(mv(ts, itemId, 'edit', -diff, { cost: costOf.get(itemId), ref: 'Bill #' + old.no, refId: saleId, party: cust ? cust.name : 'Walk-in', after: c.qty, note: diff > 0 ? 'More added to bill' : 'Taken off bill' }));
+  }
+  const sale = {
+    ...old, custId: cust ? cust.id : null, custName: cust ? cust.name : 'Walk-in', custPhone: cust ? cust.phone || '' : '',
+    lines, sub: T.sub, disc: T.disc, discLabel: cart.discMode === '%' && num(cart.disc) ? num(cart.disc) + '%' : '',
+    deliv: T.deliv, total: T.total, tender: T.tender, recv: T.recv, change: T.change, credit: T.credit,
+    method: cart.method || 'cash', note: (cart.note || '').trim(),
+    prevBal: cust ? custBalance(cust.id, { before: old.ts, exclude: saleId }) : 0,
+    edited: ts, editCount: (old.editCount || 0) + 1
+  };
+  ops.push({ s: 'sales', put: sale });
+  if (cart.holdId && S.holds.has(cart.holdId)) ops.push({ s: 'holds', del: cart.holdId });
+  return { ops, sale };
+}
+
+/* ---------- cancel (void) a bill ---------- */
+function buildVoid(saleId, reason) {
+  const s = S.sales.get(saleId);
+  if (!s || s.void) throw new Error('Bill not found or already cancelled');
+  if ((S.ix.retBySale.get(saleId) || []).length) throw new Error('This bill has returns. Return the remaining items instead of cancelling.');
+  const ts = Date.now(), ops = [], items = new Map();
+  for (const l of s.lines) {
+    if (!l.itemId || !S.items.has(l.itemId)) continue;
+    const it = items.get(l.itemId) || { ...S.items.get(l.itemId) };
+    addStock(it, l.qty, l.cost); it.updated = ts; items.set(it.id, it);
+    ops.push(mv(ts, it.id, 'void', l.qty, { cost: l.cost, ref: 'Bill #' + s.no, refId: s.id, party: s.custName, after: it.qty, note: reason || '' }));
+  }
+  for (const it of items.values()) ops.push(putItem(it));
+  ops.push({ s: 'sales', put: { ...s, void: { ts, reason: reason || '' } } });
+  return { ops };
+}
+
+/* ---------- returns ---------- */
+function retInfo(saleId) {
+  const s = S.sales.get(saleId);
+  const qty = s.lines.map(() => 0), amt = s.lines.map(() => 0);
+  const list = S.ix.retBySale.get(saleId) || [];
+  let refund = 0, dmg = 0;
+  for (const r of list) { refund += r.refund; for (const l of r.lines) { qty[l.idx] = r2(qty[l.idx] + l.qty); amt[l.idx] = r2(amt[l.idx] + l.amt); if (l.cond === 'damaged') dmg += l.qty * l.cost; } }
+  return { qty, amt, list, refund: r2(refund), dmg: r2(dmg) };
+}
+function saleState(s) {
+  if (s.void) return 'void';
+  const ri = retInfo(s.id);
+  const sold = s.lines.reduce((a, l) => a + l.qty, 0), back = ri.qty.reduce((a, b) => a + b, 0);
+  if (back <= 0) return s.edited ? 'edited' : 'ok';
+  return back >= sold - 1e-9 ? 'returned' : 'part';
+}
+function buildReturn(saleId, rlines, method, note, o = {}) {
+  const s = S.sales.get(saleId);
+  if (!s || s.void) throw new Error('Bill not found or cancelled');
+  if (method === 'account' && !s.custId) throw new Error('Walk-in bills can only be refunded in cash/online');
+  const ri = retInfo(saleId);
+  const ts = o.ts || Date.now();
+  const counters = { ...S.counters, ret: S.counters.ret + 1 };
+  const no = counters.ret, id = uid();
+  const lines = [];
+  for (const r of rlines) {
+    const q = r2(num(r.qty)); if (q <= 0) continue;
+    const l = s.lines[r.idx]; if (!l) continue;
+    const remaining = r2(l.qty - ri.qty[r.idx]);
+    if (q > remaining + 1e-9) throw new Error(l.name + ': only ' + qf(remaining) + ' left to return');
+    const last = Math.abs(remaining - q) < 1e-9;
+    const amt = last ? r2(l.netAmt - ri.amt[r.idx]) : r2(l.net * q);
+    lines.push({ idx: r.idx, itemId: l.itemId, name: l.name, code: l.code, qty: q, net: l.net, amt, cost: l.cost, cond: r.cond === 'damaged' ? 'damaged' : 'stock' });
+  }
+  if (!lines.length) throw new Error('Enter a quantity to return');
+  const refund = r2(lines.reduce((a, l) => a + l.amt, 0));
+  const ops = [], items = new Map();
+  for (const l of lines) {
+    if (!l.itemId || !S.items.has(l.itemId)) continue;
+    if (l.cond === 'stock') {
+      const it = items.get(l.itemId) || { ...S.items.get(l.itemId) };
+      addStock(it, l.qty, l.cost); it.updated = ts; items.set(it.id, it);
+      ops.push(mv(ts, it.id, 'return', l.qty, { cost: l.cost, price: r2(l.net), ref: 'Return R-' + no + ' (Bill #' + s.no + ')', refId: id, party: s.custName, after: it.qty }));
+    } else {
+      const cur = (items.get(l.itemId) || S.items.get(l.itemId)).qty;
+      ops.push(mv(ts, l.itemId, 'retdmg', 0, { cost: l.cost, price: r2(l.net), ref: 'Return R-' + no + ' (Bill #' + s.no + ')', refId: id, party: s.custName, after: cur, note: qf(l.qty) + ' pc damaged, not back in stock — loss ' + rs(l.qty * l.cost), lossQty: l.qty }));
+    }
+  }
+  for (const it of items.values()) ops.push(putItem(it));
+  const ret = { id, no, ts, day: dayKey(ts), saleId, saleNo: s.no, custId: s.custId, custName: s.custName, custPhone: s.custPhone, lines, refund, method, note: (note || '').trim() };
+  ops.push({ s: 'returns', put: ret }, metaPut('counters', counters));
+  return { ops, ret };
+}
+
+/* ---------- stock ---------- */
+function buildItem(d, o = {}) {
+  const ts = o.ts || Date.now();
+  const old = d.id ? S.items.get(d.id) : null;
+  const it = old ? { ...old } : { id: uid(), created: ts, qty: 0, active: true };
+  it.name = String(d.name || '').trim(); it.code = String(d.code || '').trim(); it.category = String(d.category || '').trim();
+  it.brand = String(d.brand || '').trim(); it.unit = String(d.unit || 'pcs').trim() || 'pcs';
+  const oldPlaces = old ? placeText(old, true) : '';
+  if (d.box !== undefined) { it.box = normText(d.box); it.sub = normText(d.sub); }
+  if (Array.isArray(d.res)) it.res = d.res.map(r => ({ box: normText(r.box), sub: normText(r.sub), qty: r2(num(r.qty)) })).filter(r => r.box || r.sub || r.qty);
+  it.cost = r2(num(d.cost)); it.price = r2(num(d.price)); it.dealer = r2(num(d.dealer));
+  it.low = d.low === '' || d.low == null ? '' : num(d.low); it.note = String(d.note || '').trim();
+  it.updated = ts;
+  const ops = [], nq = r2(num(d.qty));
+  if (!old) { it.qty = nq; if (nq) ops.push(mv(ts, it.id, o.importing ? 'import' : 'open', nq, { cost: it.cost, after: nq, note: o.importing ? 'Opening stock (imported)' : 'Opening stock' })); }
+  else {
+    if (nq !== r2(num(old.qty))) { ops.push(mv(ts, it.id, 'adjust', r2(nq - num(old.qty)), { cost: it.cost, after: nq, note: o.note || 'Changed in item edit' })); it.qty = nq; }
+    const ch = [];
+    if (r2(old.cost) !== it.cost) ch.push('cost ' + fmt(old.cost) + '→' + fmt(it.cost));
+    if (r2(old.price) !== it.price) ch.push('price ' + fmt(old.price) + '→' + fmt(it.price));
+    if (r2(old.dealer) !== it.dealer) ch.push('dealer ' + fmt(old.dealer) + '→' + fmt(it.dealer));
+    if (ch.length) ops.push(mv(ts, it.id, 'price', 0, { after: it.qty, note: ch.join(', ') }));
+    fixRes(it);
+    const nowPlaces = placeText(it, true);
+    if (resList(old).length + resList(it).length && nowPlaces !== oldPlaces && !o.importing) ops.push(mv(ts, it.id, 'move', 0, { after: it.qty, note: 'Boxes now: ' + nowPlaces }));
+  }
+  ops.push(putItem(it));
+  return { ops, item: it };
+}
+function buildStockIn(d) {
+  const ts = d.ts || Date.now();
+  const counters = { ...S.counters, sin: S.counters.sin + 1 };
+  const no = counters.sin, id = uid(), ops = [], items = new Map(), lines = [];
+  for (const l of d.lines) {
+    const q = r2(num(l.qty)); if (q <= 0) continue;
+    const it = items.get(l.itemId) || itemOrFail(l.itemId);
+    const cost = r2(num(l.cost));
+    addStock(it, q, cost);
+    const into = l.into === undefined || l.into === '' ? -1 : +l.into;
+    if (into >= 0 && it.res && it.res[into]) { it.res = it.res.map((r, i) => i === into ? { ...r, qty: r2(num(r.qty) + q) } : r); }
+    if (num(l.price) > 0) it.price = r2(num(l.price));
+    it.lastIn = ts; it.updated = ts; items.set(it.id, it);
+    lines.push({ itemId: it.id, name: it.name, code: it.code, qty: q, cost, amt: r2(q * cost) });
+    ops.push(mv(ts, it.id, 'in', q, { cost, ref: 'Stock-in #' + no, refId: id, party: d.supplier || '', after: it.qty, note: [d.invoice ? 'Invoice ' + d.invoice : '', into >= 0 && it.res[into] ? 'into reserve ' + placeOf(it.res[into].box, it.res[into].sub) : ''].filter(Boolean).join(' · ') }));
+  }
+  if (!lines.length) throw new Error('Add at least one item with quantity');
+  for (const it of items.values()) ops.push(putItem(it));
+  const rec = { id, no, ts, day: dayKey(ts), supplier: (d.supplier || '').trim(), invoice: (d.invoice || '').trim(), note: (d.note || '').trim(), lines, total: r2(lines.reduce((a, l) => a + l.amt, 0)) };
+  ops.push({ s: 'stockins', put: rec }, metaPut('counters', counters));
+  return { ops, rec };
+}
+function buildAdjust(itemId, newQty, note, resCounts) {
+  const it = itemOrFail(itemId), ts = Date.now();
+  if (Array.isArray(resCounts)) { it.res = resList(it).map((r, i) => ({ ...r, qty: r2(Math.max(0, num(resCounts[i]))) })); }
+  const diff = r2(num(newQty) - num(it.qty));
+  if (!diff) { if (Array.isArray(resCounts)) { it.updated = ts; return { ops: [putItem(it), mv(ts, itemId, 'move', 0, { after: it.qty, note: 'Counted: ' + placeText(fixRes(it), true) })] }; } return { ops: [] }; }
+  it.qty = r2(num(newQty)); it.updated = ts;
+  return { ops: [putItem(it), mv(ts, itemId, 'adjust', diff, { cost: it.cost, after: it.qty, note: note || 'Stock count' })] };
+}
+function buildMove(itemId, from, to, qty) { // from / to: -1 = main box, 0.. = reserve place
+  const it = itemOrFail(itemId), q = r2(num(qty)), ts = Date.now();
+  if (q <= 0) throw new Error('Enter how many pieces to move');
+  if (from === to) throw new Error('Choose two different boxes');
+  const P = itemPlaces(it), src = P.find(x => x.idx === from), dst = P.find(x => x.idx === to);
+  if (!src || !dst) throw new Error('Box not found');
+  if (q > src.qty + 1e-9) throw new Error('Only ' + qf(src.qty) + ' pieces in ' + (src.place || 'the main box'));
+  it.res = resList(it).map((r, i) => ({ ...r, qty: r2(num(r.qty) + (i === to ? q : 0) - (i === from ? q : 0)) }));
+  it.updated = ts;
+  return { ops: [putItem(it), mv(ts, itemId, 'move', 0, { after: it.qty, note: `Moved ${qf(q)} from ${src.place || 'main box'} to ${dst.place || 'main box'}` })] };
+}
+function buildNote(act, id, text) { // parcel reminders: add / done / undone / edit / del / restore
+  const list = (S.notes || []).map(n => ({ ...n })), ts = Date.now();
+  if (act === 'add' || act === 'restore') {
+    const t = String(text && text.text !== undefined ? text.text : text || '').trim();
+    if (!t) throw new Error('Write the reminder first');
+    list.unshift(act === 'restore' ? { ...text } : { id: uid(), text: t.slice(0, 500), ts, done: false, ...(text && text.src ? { src: text.src, phone: true } : {}) });
+  } else {
+    const n = list.find(x => x.id === id); if (!n) throw new Error('Reminder not found');
+    if (act === 'done') { n.done = true; n.doneTs = ts; }
+    else if (act === 'undone') { n.done = false; delete n.doneTs; }
+    else if (act === 'edit') { const t = String(text || '').trim(); if (!t) throw new Error('Write the reminder first'); n.text = t.slice(0, 500); n.edited = ts; }
+    else if (act === 'del') list.splice(list.indexOf(n), 1);
+  }
+  const open = list.filter(n => !n.done), done = list.filter(n => n.done).sort((a, b) => b.doneTs - a.doneTs).slice(0, 100); // keep the last 100 done ones
+  return { ops: [metaPut('notes', [...open, ...done])], id: act === 'add' ? list[0].id : id };
+}
+const boxNames = () => [...new Set([...S.items.values()].filter(i => i.active !== false).flatMap(i => [normText(i.box), ...resList(i).map(r => normText(r.box))]).filter(Boolean))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+function buildRenameBox(from, to) { // rename a cabinet / box everywhere (main box and reserve places); drawer numbers stay
+  from = normText(from); to = normText(to); const ts = Date.now(), ops = [];
+  if (from === from.toUpperCase()) to = to.toUpperCase(); // keep the shop's CAPITALS style
+  if (!from) throw new Error('Choose the box to rename');
+  if (!to) throw new Error('Type the new name');
+  if (/[›>]/.test(to)) throw new Error('Type only the box name, without › or >');
+  for (const old of S.items.values()) {
+    const hit = normText(old.box) === from || resList(old).some(r => normText(r.box) === from);
+    if (!hit) continue;
+    const it = { ...old, box: normText(old.box) === from ? to : old.box, res: resList(old).map(r => normText(r.box) === from ? { ...r, box: to } : { ...r }), updated: ts };
+    ops.push(putItem(it), mv(ts, it.id, 'move', 0, { after: it.qty, note: `Box renamed: ${from} → ${to}` }));
+  }
+  if (!ops.length) throw new Error('No item is kept in ' + from);
+  return { ops, n: ops.length / 2 };
+}
+function buildDamage(itemId, qty, note, o = {}) {
+  const it = itemOrFail(itemId), ts = o.ts || Date.now(), q = r2(num(qty));
+  if (q <= 0) throw new Error('Enter quantity');
+  it.qty = r2(num(it.qty) - q); it.updated = ts;
+  return { ops: [putItem(it), mv(ts, itemId, 'damage', -q, { cost: it.cost, after: it.qty, note: note || '' })] };
+}
+
+/* ---------- customers / money ---------- */
+function buildCustomer(d) {
+  const old = d.id ? S.customers.get(d.id) : null;
+  const c = old ? { ...old } : { id: uid(), created: Date.now(), active: true };
+  c.name = String(d.name || '').trim(); c.phone = String(d.phone || '').trim(); c.type = CUST_TYPES[d.type] ? d.type : 'retail';
+  c.city = String(d.city || '').trim(); c.address = String(d.address || '').trim(); c.note = String(d.note || '').trim();
+  c.opening = r2(num(d.opening)); c.updated = Date.now();
+  return { ops: [{ s: 'customers', put: c }], cust: c };
+}
+function buildPayment(custId, amount, method, note, o = {}) {
+  const c = S.customers.get(custId); if (!c) throw new Error('Customer not found');
+  const a = r2(num(amount)); if (a <= 0) throw new Error('Enter the amount received');
+  const ts = o.ts || Date.now();
+  const counters = { ...S.counters, pay: S.counters.pay + 1 };
+  const p = { id: uid(), no: counters.pay, ts, day: dayKey(ts), custId, custName: c.name, amount: a, method: method || 'cash', note: (note || '').trim(), balBefore: custBalance(custId) };
+  return { ops: [{ s: 'payments', put: p }, metaPut('counters', counters)], pay: p };
+}
+function buildExpense(d) {
+  const ts = d.ts || Date.now();
+  const e = { id: d.id || uid(), ts, day: dayKey(ts), cat: (d.cat || 'Other').trim(), amount: r2(num(d.amount)), method: d.method || 'cash', note: (d.note || '').trim() };
+  if (e.amount <= 0) throw new Error('Enter the amount');
+  return { ops: [{ s: 'expenses', put: e }], exp: e };
+}
+
+/* ---------- balances ---------- */
+function custBalance(custId, o = {}) {
+  const c = S.customers.get(custId); if (!c) return 0;
+  let b = num(c.opening);
+  const ok = r => (!o.before || r.ts < o.before);
+  for (const s of S.sales.values()) if (s.custId === custId && !s.void && s.id !== o.exclude && ok(s)) b += s.credit;
+  for (const p of S.payments.values()) if (p.custId === custId && ok(p)) b -= p.amount;
+  for (const r of S.returns.values()) if (r.custId === custId && r.method === 'account' && ok(r)) b -= r.refund;
+  return r2(b);
+}
+function allBalances() {
+  const m = new Map();
+  for (const c of S.customers.values()) m.set(c.id, num(c.opening));
+  const add = (id, v) => { if (m.has(id)) m.set(id, m.get(id) + v); };
+  for (const s of S.sales.values()) if (s.custId && !s.void) add(s.custId, s.credit);
+  for (const p of S.payments.values()) add(p.custId, -p.amount);
+  for (const r of S.returns.values()) if (r.custId && r.method === 'account') add(r.custId, -r.refund);
+  for (const [k, v] of m) m.set(k, r2(v));
+  return m;
+}
+function saleValue(s) { return r2(s.lines.reduce((a, l) => a + l.netAmt, 0)); }
+function saleCost(s) { return r2(s.lines.reduce((a, l) => a + l.cost * l.qty, 0)); }
+function saleNet(s) { // after returns
+  if (s.void) return { value: 0, cost: 0, profit: 0, refund: 0, total: 0 };
+  const ri = retInfo(s.id);
+  let value = 0, cost = 0;
+  s.lines.forEach((l, i) => { value += l.netAmt - ri.amt[i]; cost += l.cost * (l.qty - ri.qty[i]); });
+  cost += ri.dmg; // damaged returns are a loss
+  return { value: r2(value), cost: r2(cost), profit: r2(value - cost), refund: ri.refund, total: r2(s.total - ri.refund) };
+}
+function custLedger(custId) {
+  const c = S.customers.get(custId); const rows = [];
+  if (num(c.opening)) rows.push({ ts: c.created || 0, kind: 'open', detail: 'Opening balance (old udhaar)', dr: Math.max(0, c.opening), cr: Math.max(0, -c.opening) });
+  for (const s of S.sales.values()) if (s.custId === custId && !s.void) {
+    rows.push({ ts: s.ts, kind: 'sale', id: s.id, detail: 'Bill #' + s.no + ' — ' + s.lines.length + ' item' + (s.lines.length > 1 ? 's' : ''), dr: s.total, cr: 0 });
+    if (s.recv > 0) rows.push({ ts: s.ts + 1, kind: 'paid', id: s.id, detail: 'Paid at counter (' + (METHODS[s.method] || s.method) + ')', dr: 0, cr: s.recv });
+  }
+  for (const p of S.payments.values()) if (p.custId === custId) rows.push({ ts: p.ts, kind: 'pay', id: p.id, detail: 'Payment received (' + (METHODS[p.method] || p.method) + ')' + (p.note ? ' — ' + p.note : ''), dr: 0, cr: p.amount });
+  for (const r of S.returns.values()) if (r.custId === custId) {
+    rows.push({ ts: r.ts, kind: 'ret', id: r.id, detail: 'Return R-' + r.no + ' on bill #' + r.saleNo, dr: 0, cr: r.refund });
+    if (r.method !== 'account') rows.push({ ts: r.ts + 1, kind: 'refund', id: r.id, detail: 'Refund given (' + (METHODS[r.method] || r.method) + ')', dr: r.refund, cr: 0 });
+  }
+  rows.sort((a, b) => a.ts - b.ts);
+  let bal = 0; for (const r of rows) { bal = r2(bal + r.dr - r.cr); r.bal = bal; }
+  return rows;
+}
+function custStats(custId) {
+  let bills = 0, bought = 0, profit = 0, last = 0, first = 0;
+  const items = new Map();
+  for (const s of S.sales.values()) {
+    if (s.custId !== custId || s.void) continue;
+    const n = saleNet(s); bills++; bought += n.total; profit += n.profit;
+    if (s.ts > last) last = s.ts; if (!first || s.ts < first) first = s.ts;
+    const ri = retInfo(s.id);
+    s.lines.forEach((l, i) => {
+      const k = l.itemId || ('x:' + l.name); const q = l.qty - ri.qty[i]; if (q <= 0) return;
+      const e = items.get(k) || { itemId: l.itemId, name: l.name, code: l.code, qty: 0, value: 0, times: 0, last: 0, lastPrice: 0 };
+      e.qty += q; e.value += l.netAmt - ri.amt[i]; e.times++; if (s.ts >= e.last) { e.last = s.ts; e.lastPrice = l.price; }
+      items.set(k, e);
+    });
+  }
+  return { bills, bought: r2(bought), profit: r2(profit), last, first, items: [...items.values()].sort((a, b) => b.value - a.value), balance: custBalance(custId) };
+}
+
+/* ---------- reports ---------- */
+const PERIODS = [['today', 'Today'], ['yesterday', 'Yesterday'], ['7d', 'Last 7 days'], ['month', 'This month'], ['lastmonth', 'Last month'], ['year', 'This year'], ['all', 'All time'], ['custom', 'Custom']];
+function periodRange(p, from, to) {
+  const t = dayKey(); const d = keyToDate(t);
+  switch (p) {
+    case 'today': return [t, t];
+    case 'yesterday': { const y = addDays(t, -1); return [y, y]; }
+    case '7d': return [addDays(t, -6), t];
+    case 'month': return [dayKey(new Date(d.getFullYear(), d.getMonth(), 1).getTime()), t];
+    case 'lastmonth': { const a = new Date(d.getFullYear(), d.getMonth() - 1, 1), b = new Date(d.getFullYear(), d.getMonth(), 0); return [dayKey(a.getTime()), dayKey(b.getTime())]; }
+    case 'year': return [d.getFullYear() + '-01-01', t];
+    case 'all': return ['0000-01-01', '9999-12-31'];
+    default: return [from || t, to || t];
+  }
+}
+function report(from, to) {
+  const inR = k => k >= from && k <= to;
+  const R = {
+    from, to, bills: 0, qty: 0, gross: 0, disc: 0, sales: 0, cogs: 0, deliv: 0, retAmt: 0, retCost: 0, retQty: 0, retCount: 0,
+    dmgRet: 0, dmgStock: 0, expenses: 0, creditGiven: 0, recovered: 0, refundCash: 0, refundAcct: 0, stockInValue: 0,
+    money: { cash: 0, easypaisa: 0, jazzcash: 0, bank: 0 }, salesBy: { cash: 0, easypaisa: 0, jazzcash: 0, bank: 0 },
+    items: new Map(), custs: new Map(), days: new Map(), expCats: new Map(), dmgList: [], billList: []
+  };
+  const I = (l) => { const k = l.itemId || ('x:' + l.name); if (!R.items.has(k)) R.items.set(k, { itemId: l.itemId, name: l.name, code: l.code || '', qty: 0, sales: 0, cost: 0, dmg: 0, retQty: 0 }); return R.items.get(k); };
+  const C = (id, name) => { const k = id || 'walkin'; if (!R.custs.has(k)) R.custs.set(k, { custId: id, name: id ? name : 'Walk-in customers', bills: 0, sales: 0, cost: 0, credit: 0 }); return R.custs.get(k); };
+  const D = (k) => { if (!R.days.has(k)) R.days.set(k, { day: k, bills: 0, sales: 0, cost: 0, ret: 0, dmg: 0, exp: 0 }); return R.days.get(k); };
+  const addMoney = (m, v) => { if (m in R.money) R.money[m] = r2(R.money[m] + v); };
+  for (const s of S.sales.values()) {
+    if (s.void || !inR(s.day)) continue;
+    R.bills++; R.gross += s.sub; R.disc += s.disc; R.deliv += s.deliv; R.creditGiven += s.credit;
+    addMoney(s.method, s.recv); if (s.method in R.salesBy) R.salesBy[s.method] += s.recv;
+    const c = C(s.custId, s.custName), d = D(s.day);
+    c.bills++; d.bills++; c.credit += s.credit;
+    let v = 0, co = 0;
+    for (const l of s.lines) {
+      const it = I(l); it.qty += l.qty; it.sales += l.netAmt; it.cost += l.cost * l.qty;
+      v += l.netAmt; co += l.cost * l.qty; R.qty += l.qty;
+    }
+    R.sales += v; R.cogs += co; c.sales += v; c.cost += co; d.sales += v; d.cost += co;
+    R.billList.push(s);
+  }
+  for (const r of S.returns.values()) {
+    if (!inR(r.day)) continue;
+    R.retCount++;
+    if (r.method === 'account') R.refundAcct += r.refund; else { R.refundCash += r.refund; addMoney(r.method, -r.refund); }
+    const c = C(r.custId, r.custName), d = D(r.day);
+    for (const l of r.lines) {
+      const it = I(l); const lc = l.cost * l.qty;
+      it.qty -= l.qty; it.retQty += l.qty; it.sales -= l.amt; it.cost -= lc;
+      R.retAmt += l.amt; R.retCost += lc; R.retQty += l.qty;
+      c.sales -= l.amt; if (l.cond !== 'damaged') c.cost -= lc; d.sales -= l.amt; d.cost -= lc; d.ret += l.amt;
+      if (l.cond === 'damaged') { R.dmgRet += lc; it.dmg += lc; d.dmg += lc; R.dmgList.push({ ts: r.ts, name: l.name, code: l.code, qty: l.qty, loss: r2(lc), why: 'Customer return (bill #' + r.saleNo + ')' + (r.note ? ' — ' + r.note : '') }); }
+    }
+  }
+  for (const m of S.moves.values()) {
+    if (!inR(m.day)) continue;
+    if (m.type === 'damage') {
+      const it = S.items.get(m.itemId) || { name: '(deleted item)', code: '' };
+      const loss = -m.qty * num(m.cost);
+      R.dmgStock += loss; D(m.day).dmg += loss;
+      const e = I({ itemId: m.itemId, name: it.name, code: it.code }); e.dmg += loss;
+      R.dmgList.push({ ts: m.ts, name: it.name, code: it.code, qty: -m.qty, loss: r2(loss), why: 'Damaged in shop' + (m.note ? ' — ' + m.note : '') });
+    }
+  }
+  for (const p of S.payments.values()) if (inR(p.day)) { R.recovered += p.amount; addMoney(p.method, p.amount); }
+  for (const e of S.expenses.values()) if (inR(e.day)) { R.expenses += e.amount; addMoney(e.method, -e.amount); D(e.day).exp += e.amount; R.expCats.set(e.cat, r2((R.expCats.get(e.cat) || 0) + e.amount)); }
+  for (const si of S.stockins.values()) if (inR(si.day)) R.stockInValue += si.total;
+  R.netSales = r2(R.sales - R.retAmt);
+  R.netCogs = r2(R.cogs - R.retCost);
+  R.damage = r2(R.dmgRet + R.dmgStock);
+  R.grossProfit = r2(R.netSales - R.netCogs - R.damage);
+  R.netProfit = r2(R.grossProfit - R.expenses);
+  R.margin = R.netSales > 0 ? R.grossProfit / R.netSales * 100 : 0;
+  R.moneyIn = r2(Object.values(R.money).reduce((a, b) => a + b, 0));
+  for (const k of ['gross', 'disc', 'sales', 'cogs', 'deliv', 'retAmt', 'retCost', 'expenses', 'creditGiven', 'recovered', 'refundCash', 'refundAcct', 'stockInValue']) R[k] = r2(R[k]);
+  R.billList.sort((a, b) => b.ts - a.ts);
+  R.dmgList.sort((a, b) => b.ts - a.ts);
+  return R;
+}
+function stockValue() {
+  let cost = 0, sale = 0, qty = 0, low = 0, out = 0, count = 0;
+  for (const it of S.items.values()) {
+    if (it.active === false) continue;
+    count++;
+    const q = num(it.qty);
+    if (q > 0) { cost += q * num(it.cost); sale += q * num(it.price); qty += q; }
+    if (q <= 0) out++; else if (q <= lowLevel(it)) low++;
+  }
+  return { cost: r2(cost), sale: r2(sale), qty: r2(qty), low, out, count };
+}
+const lowLevel = it => it.low === '' || it.low == null ? num(S.settings.lowDefault) : num(it.low);
+function itemStats(itemId) {
+  const moves = [...S.moves.values()].filter(m => m.itemId === itemId).sort((a, b) => a.ts - b.ts);
+  let sold = 0, revenue = 0, cost = 0, retQty = 0, dmgQty = 0, dmgLoss = 0, inQty = 0, inValue = 0, lastSold = 0, lastIn = 0;
+  for (const s of S.sales.values()) {
+    if (s.void) continue;
+    s.lines.forEach((l, i) => {
+      if (l.itemId !== itemId) return;
+      sold += l.qty; revenue += l.netAmt; cost += l.cost * l.qty; if (s.ts > lastSold) lastSold = s.ts;
+    });
+  }
+  for (const r of S.returns.values()) for (const l of r.lines) if (l.itemId === itemId) {
+    sold -= l.qty; revenue -= l.amt; cost -= l.cost * l.qty; retQty += l.qty;
+    if (l.cond === 'damaged') { dmgQty += l.qty; dmgLoss += l.qty * l.cost; }
+  }
+  for (const m of moves) {
+    if (m.type === 'damage') { dmgQty += -m.qty; dmgLoss += -m.qty * num(m.cost); }
+    if (m.type === 'in') { inQty += m.qty; inValue += m.qty * num(m.cost); if (m.ts > lastIn) lastIn = m.ts; }
+  }
+  return { moves, sold: r2(sold), revenue: r2(revenue), cost: r2(cost), profit: r2(revenue - cost - dmgLoss), retQty: r2(retQty), dmgQty: r2(dmgQty), dmgLoss: r2(dmgLoss), inQty: r2(inQty), inValue: r2(inValue), lastSold, lastIn };
+}
+function dataCheck() {
+  const sum = new Map();
+  for (const m of S.moves.values()) sum.set(m.itemId, r2((sum.get(m.itemId) || 0) + num(m.qty)));
+  const bad = [];
+  for (const it of S.items.values()) { const s = sum.get(it.id) || 0; if (Math.abs(s - num(it.qty)) > 1e-6) bad.push({ it, hist: s }); }
+  const nos = new Map(); const dup = [];
+  for (const s of S.sales.values()) { if (nos.has(s.no)) dup.push(s.no); nos.set(s.no, 1); }
+  return { bad, dup };
+}
+
+/* ---------- search ---------- */
+function searchItems(q, limit = 40) {
+  q = lc(q).trim(); if (!q) return [];
+  const toks = q.split(/\s+/);
+  const out = [];
+  for (const it of S.items.values()) {
+    if (it.active === false) continue;
+    const hay = lc(it.name + ' ' + it.code + ' ' + it.category + ' ' + it.brand + ' ' + placeText(it));
+    if (!toks.every(t => hay.includes(t))) continue;
+    const code = lc(it.code), name = lc(it.name);
+    let score = 0;
+    if (code && code === q) score = 100; else if (code.startsWith(q)) score = 60; else if (name.startsWith(q)) score = 40; else if (code.includes(q)) score = 30;
+    out.push([score, it]);
+  }
+  out.sort((a, b) => b[0] - a[0] || lc(a[1].name).localeCompare(lc(b[1].name)));
+  return out.slice(0, limit).map(x => x[1]);
+}
+function searchCustomers(q, limit = 30) {
+  q = lc(q).trim(); const digits = q.replace(/\D/g, '');
+  const out = [];
+  for (const c of S.customers.values()) {
+    if (c.active === false) continue;
+    if (!q || lc(c.name).includes(q) || lc(c.city).includes(q) || (digits.length >= 3 && String(c.phone).replace(/\D/g, '').includes(digits))) out.push(c);
+  }
+  out.sort((a, b) => (lc(a.name).startsWith(q) ? 0 : 1) - (lc(b.name).startsWith(q) ? 0 : 1) || lc(a.name).localeCompare(lc(b.name)));
+  return out.slice(0, limit);
+}
+
+/* ================= Online copy (Supabase) — shared by the shop POS and the phone page =================
+   Talks straight to the shop's own free Supabase project over HTTPS (no extra libraries).
+   The project link + publishable key are public by design; the data is protected by the owner's
+   email + password and by row-level security (each row belongs to the signed-in owner). */
+const CloudAPI = {
+  KEY: 'shakeelpos:cloud', // {url, key, email, uid, access, refresh, exp}
+  c: null,
+  load() { try { this.c = JSON.parse(localStorage.getItem(this.KEY) || 'null'); } catch (e) { this.c = null; } return this.c; },
+  save() { try { if (this.c) localStorage.setItem(this.KEY, JSON.stringify(this.c)); else localStorage.removeItem(this.KEY); } catch (e) { } },
+  get on() { return !!(this.c && this.c.refresh); },
+  cleanUrl(u) {
+    u = String(u || '').trim().replace(/\/+$/, '');
+    if (u && !/^https?:\/\//i.test(u)) u = 'https://' + u;
+    return u.replace(/\/(rest|auth)\/v1.*$/i, '').replace(/\/+$/, '');
+  },
+  friendly(e) {
+    const m = String(e && e.message || e);
+    if (e && e.name === 'AbortError') return new Error('The internet is too slow or not working. Try again.');
+    if (e instanceof TypeError || /failed to fetch|networkerror|load failed/i.test(m)) return Object.assign(new Error('No internet, or the project link is wrong.'), { net: true });
+    if (/invalid login credentials/i.test(m)) return Object.assign(new Error('Wrong email or password.'), { status: 400 });
+    if (/email not confirmed/i.test(m)) return Object.assign(new Error('This email is not confirmed yet. In Supabase, add the user again with "Auto Confirm User" ticked.'), { status: 400 });
+    if (/invalid api key|no api key|apikey/i.test(m)) return Object.assign(new Error('The key is wrong. Copy the publishable (anon) key again from Supabase.'), { status: 401 });
+    if (e && (e.code === 'PGRST205' || e.code === '42P01' || /could not find the table|relation .* does not exist/i.test(m))) return Object.assign(new Error('The tables are not made yet. Run the setup SQL in Supabase first (step 2).'), { status: 404, setup: true });
+    return e instanceof Error ? e : new Error(m);
+  },
+  async http(path, o = {}) {
+    const c = this.c, ctl = new AbortController(), t = setTimeout(() => ctl.abort(), o.timeout || 30000);
+    const headers = Object.assign({ apikey: c.key, 'Content-Type': 'application/json' }, o.auth === false || !c.access ? {} : { Authorization: 'Bearer ' + c.access }, o.headers || {});
+    try {
+      const r = await fetch(c.url + path, { method: o.method || 'GET', headers, body: o.body === undefined ? undefined : JSON.stringify(o.body), signal: ctl.signal, cache: 'no-store' });
+      const text = await r.text(); let data = null;
+      try { data = text ? JSON.parse(text) : null; } catch (e) { data = text; }
+      if (!r.ok) {
+        const e = new Error((data && (data.msg || data.message || data.error_description || data.error)) || ('HTTP ' + r.status));
+        e.status = r.status; e.code = data && data.code; throw e;
+      }
+      return { data, headers: r.headers };
+    } catch (e) { throw this.friendly(e); }
+    finally { clearTimeout(t); }
+  },
+  setTokens(d) {
+    this.c.access = d.access_token; this.c.refresh = d.refresh_token;
+    this.c.exp = Date.now() + (num(d.expires_in) || 3600) * 1000;
+    if (d.user && d.user.id) this.c.uid = d.user.id;
+  },
+  async signIn(url, key, email, password) {
+    const c = { url: this.cleanUrl(url), key: String(key || '').trim(), email: String(email || '').trim().toLowerCase() };
+    if (!/^https:\/\/.+/i.test(c.url) && !/^http:\/\/(127\.0\.0\.1|localhost)/i.test(c.url)) throw new Error('Paste the Project URL from Supabase (it starts with https://).');
+    if (!c.key) throw new Error('Paste the publishable (anon) key from Supabase.');
+    if (!c.email || !password) throw new Error('Type the email and password of the user you made in Supabase.');
+    const old = this.c; this.c = c;
+    try {
+      const { data } = await this.http('/auth/v1/token?grant_type=password', { method: 'POST', auth: false, body: { email: c.email, password } });
+      this.setTokens(data); this.save(); return this.c;
+    } catch (e) { this.c = old; throw e; }
+  },
+  async fresh(force) { // makes sure the access token is valid (refreshes it about every hour)
+    if (!this.on) throw Object.assign(new Error('Not signed in'), { login: true });
+    if (!force && Date.now() < this.c.exp - 120e3) return;
+    if (this._ref) return this._ref;
+    this._ref = (async () => {
+      try { const { data } = await this.http('/auth/v1/token?grant_type=refresh_token', { method: 'POST', auth: false, body: { refresh_token: this.c.refresh } }); this.setTokens(data); this.save(); }
+      catch (e) { if (e.status === 400 || e.status === 401 || e.status === 403) { e.login = true; e.message = 'Signed out of the online copy. Sign in again.'; } throw e; }
+      finally { this._ref = null; }
+    })();
+    return this._ref;
+  },
+  async api(path, o = {}) {
+    await this.fresh();
+    try { return await this.http('/rest/v1/' + path, o); }
+    catch (e) { if (e.status === 401) { await this.fresh(true); return this.http('/rest/v1/' + path, o); } throw e; }
+  },
+  signOut() { this.c = null; this.save(); },
+  linkCode() { return btoa(unescape(encodeURIComponent(JSON.stringify({ u: this.c.url, k: this.c.key, e: this.c.email })))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); },
+  readCode(s) { try { const j = JSON.parse(decodeURIComponent(escape(atob(String(s).replace(/-/g, '+').replace(/_/g, '/'))))); return j && j.u && j.k ? j : null; } catch (e) { return null; } }
+};
+const fnv = s => { let h = 0x811c9dc5; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193); } return (h >>> 0).toString(36) + ':' + s.length.toString(36); };
+
+/* the SQL the owner runs once in Supabase → SQL Editor (also shipped as cloud-setup.sql) */
+const CLOUD_SQL = `-- Shakeel POS online copy: run once in Supabase > SQL Editor > New query > Run
+create table if not exists public.pos_records (
+  owner uuid not null default auth.uid() references auth.users(id) on delete cascade,
+  store text not null,
+  id text not null,
+  data jsonb,
+  deleted boolean not null default false,
+  updated_at timestamptz not null default now(),
+  primary key (owner, store, id)
+);
+create index if not exists pos_records_updated on public.pos_records (owner, updated_at);
+alter table public.pos_records enable row level security;
+drop policy if exists "owner reads" on public.pos_records;
+drop policy if exists "owner adds" on public.pos_records;
+drop policy if exists "owner changes" on public.pos_records;
+drop policy if exists "owner deletes" on public.pos_records;
+create policy "owner reads" on public.pos_records for select to authenticated using (owner = auth.uid());
+create policy "owner adds" on public.pos_records for insert to authenticated with check (owner = auth.uid());
+create policy "owner changes" on public.pos_records for update to authenticated using (owner = auth.uid()) with check (owner = auth.uid());
+create policy "owner deletes" on public.pos_records for delete to authenticated using (owner = auth.uid());
+create or replace function public.pos_touch() returns trigger language plpgsql as $$
+begin new.updated_at = clock_timestamp(); return new; end $$;
+drop trigger if exists pos_touch on public.pos_records;
+create trigger pos_touch before insert or update on public.pos_records for each row execute function public.pos_touch();
+
+-- notes written on the phone (parcel reminders); the shop PC picks them up
+create table if not exists public.pos_inbox (
+  id uuid primary key default gen_random_uuid(),
+  owner uuid not null default auth.uid() references auth.users(id) on delete cascade,
+  kind text not null default 'note',
+  text text not null default '',
+  ref text,
+  done boolean not null default false,
+  created_at timestamptz not null default now()
+);
+alter table public.pos_inbox enable row level security;
+drop policy if exists "owner reads" on public.pos_inbox;
+drop policy if exists "owner adds" on public.pos_inbox;
+drop policy if exists "owner changes" on public.pos_inbox;
+drop policy if exists "owner deletes" on public.pos_inbox;
+create policy "owner reads" on public.pos_inbox for select to authenticated using (owner = auth.uid());
+create policy "owner adds" on public.pos_inbox for insert to authenticated with check (owner = auth.uid());
+create policy "owner changes" on public.pos_inbox for update to authenticated using (owner = auth.uid()) with check (owner = auth.uid());
+create policy "owner deletes" on public.pos_inbox for delete to authenticated using (owner = auth.uid());
+grant select, insert, update, delete on public.pos_records, public.pos_inbox to authenticated;
+`;
+
+/* ================= Shakeel POS — phone page =================
+   Shows the shop PC's data from the owner's own Supabase project: today, stock, udhaar, bills, reports,
+   parcels and parcel reminders. Read-only, except reminders (sent to the shop PC through pos_inbox).
+   Uses the very same calculation code as the POS (core.js + logic.js), so numbers always match. */
+S.settings = defaultSettings(); S.counters = defaultCounters(); S.notes = []; S.backup = {};
+const PH = { tab: 'home', q: '', stockF: 'all', custQ: '', period: 'today', from: '', to: '', day: dayKey(), last: 0, synced: 0, loading: false, err: '', inbox: [], first: true, link: null };
+const P_STATUS = { ready: ['Ready to send', 'a'], booked: ['Sent', ''], delivered: ['Delivered', 'g'], returned: ['Returned', 'r'] };
+const TABS = [['home', '🏠', 'Today'], ['stock', '📦', 'Stock'], ['udhaar', '👥', 'Udhaar'], ['bills', '🧾', 'Bills'], ['reports', '📊', 'Reports']];
+
+/* ---------- small helpers ---------- */
+function toast(msg, cls) { const t = document.createElement('div'); t.className = 'toast ' + (cls || ''); t.textContent = msg; $('#toasts').appendChild(t); setTimeout(() => t.remove(), 2800); }
+const ago = ts => { if (!ts) return 'never'; const m = Math.round((Date.now() - ts) / 60000); if (m < 1) return 'just now'; if (m < 60) return m + ' min ago'; const h = Math.round(m / 60); if (h < 24) return h + ' hour' + (h > 1 ? 's' : '') + ' ago'; return fmtDT(ts); };
+const money = n => 'Rs ' + Math.round(+n || 0).toLocaleString('en-US');
+const waLink = (phone, text) => 'https://wa.me/' + waPhone(phone) + '?text=' + encodeURIComponent(text);
+
+/* ---------- local copy on the phone (opens fast, works with weak signal) ---------- */
+const Cache = {
+  db: null,
+  open() {
+    if (this.db) return Promise.resolve(this.db);
+    return new Promise((res, rej) => {
+      const rq = indexedDB.open('ShakeelPhone', 1);
+      rq.onupgradeneeded = () => { rq.result.createObjectStore('rows'); rq.result.createObjectStore('meta'); };
+      rq.onsuccess = () => { this.db = rq.result; res(this.db); };
+      rq.onerror = () => rej(rq.error);
+    });
+  },
+  tx(stores, mode, fn) { return new Promise((res, rej) => { const t = this.db.transaction(stores, mode); const out = fn(t); t.oncomplete = () => res(out); t.onerror = t.onabort = () => rej(t.error); }); },
+  async all() {
+    await this.open();
+    return new Promise((res, rej) => { const out = [], cur = this.db.transaction('rows').objectStore('rows').openCursor(); cur.onsuccess = () => { const c = cur.result; if (c) { out.push(c.value); c.continue(); } else res(out); }; cur.onerror = () => rej(cur.error); });
+  },
+  async meta(k) { await this.open(); return new Promise(res => { const r = this.db.transaction('meta').objectStore('meta').get(k); r.onsuccess = () => res(r.result); r.onerror = () => res(undefined); }); },
+  async setMeta(k, v) { await this.open(); return this.tx(['meta'], 'readwrite', t => t.objectStore('meta').put(v, k)); },
+  async put(rows) { await this.open(); return this.tx(['rows'], 'readwrite', t => { const os = t.objectStore('rows'); for (const r of rows) { const k = r.store + '/' + r.id; if (r.deleted && r.store !== 'meta') os.delete(k); else os.put({ store: r.store, id: r.id, data: r.data }, k); } }); },
+  async clear() { await this.open(); return this.tx(['rows', 'meta'], 'readwrite', t => { t.objectStore('rows').clear(); t.objectStore('meta').clear(); }); }
+};
+function applyRow(r) {
+  if (r.store === 'meta') {
+    if (r.deleted || !r.data) return;
+    if (r.id === 'settings') S.settings = Object.assign(defaultSettings(), r.data);
+    else if (r.id === 'counters') S.counters = Object.assign(defaultCounters(), r.data);
+    else if (r.id === 'notes') S.notes = Array.isArray(r.data) ? r.data : [];
+    return;
+  }
+  const m = S[r.store]; if (!(m instanceof Map)) return;
+  if (r.deleted || !r.data) m.delete(r.id); else m.set(r.id, r.data);
+}
+async function loadCache() {
+  const who = CloudAPI.c.url + '|' + CloudAPI.c.uid;
+  if ((await Cache.meta('who')) !== who) { await Cache.clear(); await Cache.setMeta('who', who); }
+  for (const r of await Cache.all()) applyRow(r);
+  PH.last = (await Cache.meta('last')) || 0; PH.synced = (await Cache.meta('synced')) || 0;
+  rebuildIndexes();
+}
+async function pull(quiet) {
+  if (PH.loading || !CloudAPI.on) return;
+  PH.loading = true; PH.err = ''; drawStatus();
+  let got = 0;
+  try {
+    const since = new Date(Math.max(0, PH.last - 180e3)).toISOString(); // small overlap so nothing is missed
+    let maxT = PH.last;
+    for (let off = 0; ; off += 1000) {
+      const { data } = await CloudAPI.api(`pos_records?select=store,id,data,deleted,updated_at&updated_at=gt.${encodeURIComponent(since)}&order=updated_at.asc,store.asc,id.asc&limit=1000&offset=${off}`, { timeout: 60000 });
+      for (const r of data) { applyRow(r); const t = Date.parse(r.updated_at); if (t > maxT) maxT = t; }
+      await Cache.put(data); got += data.length;
+      if (data.length < 1000) break;
+      drawStatus('Loading… ' + got);
+    }
+    const ib = await CloudAPI.api('pos_inbox?select=id,kind,text,ref,created_at&done=eq.false&order=created_at.asc');
+    PH.inbox = ib.data || [];
+    PH.last = maxT; PH.synced = Date.now();
+    await Cache.setMeta('last', maxT); await Cache.setMeta('synced', PH.synced);
+    rebuildIndexes();
+  } catch (e) {
+    PH.err = e.message;
+    if (e.login) { CloudAPI.signOut(); PH.loading = false; return renderLogin('Please sign in again.'); }
+    if (!quiet) toast(e.message, 'err');
+  }
+  PH.loading = false;
+  if (got || PH.first || PH.inbox.length) { PH.first = false; renderPage(); } else drawStatus();
+}
+
+/* ---------- login ---------- */
+function renderLogin(err) {
+  const L = PH.link || (() => { try { return JSON.parse(localStorage.getItem('shakeelpos:link') || 'null'); } catch (e) { return null; } })();
+  $('#app').innerHTML = `<div class="login">
+    <div class="logo">S</div>
+    <h1>Shakeel POS</h1><p>Your shop on your phone — sales, profit, stock, udhaar and parcels.</p>
+    ${L ? `<div class="ok">✓ Shop link received${L.e ? ' for ' + esc(L.e) : ''}</div>` : `<div class="banner">First time? On the shop PC open <b>Settings → Online</b> and press <b>“Send phone link to my WhatsApp”</b>, then open that link here.</div>
+      <label>Project URL</label><input class="in" id="lgU" placeholder="https://xxxx.supabase.co" autocomplete="off">
+      <label>Publishable key</label><input class="in" id="lgK" autocomplete="off">`}
+    <label>Email</label><input class="in" id="lgE" type="email" autocomplete="username" value="${esc((L && L.e) || (CloudAPI.c && CloudAPI.c.email) || '')}">
+    <label>Password</label><input class="in" id="lgP" type="password" autocomplete="current-password">
+    <button class="btn pri full" id="lgGo" style="margin-top:18px;padding:14px">Sign in</button>
+    ${err ? `<div class="err">${esc(err)}</div>` : ''}
+    <p class="small muted" style="margin-top:18px">Only the email and password you made in Supabase can open your shop data.</p></div>`;
+  const go = async () => {
+    const b = $('#lgGo'); b.disabled = true; b.textContent = 'Signing in…';
+    try {
+      await CloudAPI.signIn(L ? L.u : $('#lgU').value, L ? L.k : $('#lgK').value, $('#lgE').value, $('#lgP').value);
+      try { localStorage.setItem('shakeelpos:link', JSON.stringify({ u: CloudAPI.c.url, k: CloudAPI.c.key, e: CloudAPI.c.email })); } catch (e) { }
+      PH.first = true; await start();
+    } catch (e) { renderLogin(e.message); }
+  };
+  $('#lgGo').onclick = go;
+  $('#lgP').addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+}
+
+/* ---------- frame ---------- */
+function drawStatus(text) {
+  const el = $('#st'), rf = $('#ref'); if (!el) return;
+  rf && rf.classList.toggle('spin', PH.loading);
+  if (text) { el.textContent = text; el.className = 'st'; return; }
+  if (PH.err) { el.textContent = '⚠ ' + PH.err + (PH.synced ? ' · showing ' + ago(PH.synced) : ''); el.className = 'st bad'; return; }
+  el.className = 'st';
+  el.textContent = PH.loading && !PH.synced ? 'Loading your shop…' : (PH.last ? 'Shop data up to ' + (dayKey(PH.last) === dayKey() ? fmtTime(PH.last) : fmtDT(PH.last)) : 'No data from the shop PC yet') + ' · checked ' + ago(PH.synced);
+}
+function frame() {
+  $('#app').innerHTML = `<header class="top"><div class="t"><div class="shop" id="shopName"></div><div class="st" id="st"></div></div>
+    <button class="ib" id="ref" title="Refresh">↻</button><button class="ib" id="mn" title="Menu">⋮</button></header>
+    <main id="pg"></main>
+    <nav class="tabs">${TABS.map(([k, i, l]) => `<button data-t="${k}"><span class="i">${i}</span>${l}</button>`).join('')}</nav>`;
+  $('#ref').onclick = () => pull();
+  $('#mn').onclick = e => { e.stopPropagation(); menu(); };
+  $$('.tabs [data-t]').forEach(b => b.onclick = () => { PH.tab = b.dataset.t; window.scrollTo(0, 0); renderPage(); });
+}
+function menu() {
+  const old = $('.menu'); if (old) return old.remove();
+  const m = document.createElement('div'); m.className = 'menu';
+  m.innerHTML = `<div class="small muted" style="padding:12px 16px 4px">${esc(CloudAPI.c.email)}</div><button data-a="full">Load everything again</button><button data-a="out" class="dan">Sign out on this phone</button>`;
+  document.body.appendChild(m);
+  const close = () => { m.remove(); document.removeEventListener('click', close); };
+  setTimeout(() => document.addEventListener('click', close), 0);
+  m.onclick = async e => {
+    const a = e.target.dataset.a; if (!a) return; close();
+    if (a === 'full') { await Cache.clear(); location.reload(); }
+    if (a === 'out') { if (!confirm('Sign out of Shakeel POS on this phone?')) return; await Cache.clear(); CloudAPI.signOut(); location.reload(); }
+  };
+}
+function renderPage() {
+  if (!$('#pg')) frame();
+  $('#shopName').textContent = S.settings.shop || 'Shakeel POS';
+  $$('.tabs [data-t]').forEach(b => b.classList.toggle('on', b.dataset.t === PH.tab));
+  const y = window.scrollY, act = document.activeElement && document.activeElement.id;
+  $('#pg').innerHTML = (PAGES[PH.tab] || PAGES.home)();
+  BIND[PH.tab] && BIND[PH.tab]();
+  if (act === 'sq' || act === 'cq') { const i = $('#' + act); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }
+  window.scrollTo(0, y);
+  drawStatus();
+}
+function sheet(html) {
+  const s = $('#sheet'); s.innerHTML = `<div class="pn"><div class="grab"></div>${html}</div>`; s.classList.remove('hide');
+  s.onclick = e => { if (e.target === s) closeSheet(); };
+  history.pushState({ sheet: 1 }, '');
+}
+function closeSheet() { const s = $('#sheet'); if (!s.classList.contains('hide')) { s.classList.add('hide'); s.innerHTML = ''; } }
+window.addEventListener('popstate', closeSheet); // phone back button closes the sheet
+
+/* ---------- pages ---------- */
+const sumRep = R => ({ sales: R.netSales, profit: R.grossProfit, net: R.netProfit, bills: R.bills, money: R.moneyIn });
+function noData() { return !S.items.size && !S.sales.size ? `<div class="banner">${PH.loading ? 'Loading your shop data…' : 'No shop data yet. Make sure the shop PC is on, connected to the internet, and shows <b>☁️ Online</b> at the top.'}</div>` : ''; }
+function openNotes() {
+  const pend = PH.inbox.filter(m => m.kind !== 'done').map(m => ({ wait: true, id: m.id, text: m.text, ts: Date.parse(m.created_at) }));
+  const doneRefs = new Set(PH.inbox.filter(m => m.kind === 'done').map(m => m.ref));
+  const fromPC = (S.notes || []).filter(n => !n.done && !doneRefs.has(n.id) && !(n.src && PH.inbox.some(m => m.id === n.src)));
+  return [...pend.reverse(), ...fromPC];
+}
+const PAGES = {
+  home() {
+    const t = dayKey(), T = report(t, t), Y = report(addDays(t, -1), addDays(t, -1)), [mf, mt] = periodRange('month'), M = report(mf, mt);
+    const bal = allBalances(); let due = 0, dueN = 0; for (const v of bal.values()) if (v > 0.5) { due += v; dueN++; }
+    const sv = stockValue(), refill = [...S.items.values()].filter(needsRefill).length;
+    const parcels = [...S.parcels.values()].filter(p => p.status === 'ready' || p.status === 'booked').sort((a, b) => b.ts - a.ts);
+    const notes = openNotes(), cmp = (a, b) => b ? (a >= b ? '<span class="pos">▲</span>' : '<span class="neg">▼</span>') : '';
+    return `${noData()}
+      <div class="h1">Today · ${fmtDate(t)}</div>
+      <div class="kp">
+        <div class="k hero"><div class="l">Sales</div><div class="v">${money(T.netSales)}</div><div class="s">${T.bills} bill${T.bills === 1 ? '' : 's'} · ${fmt(T.qty)} pcs</div></div>
+        <div class="k hero"><div class="l">Profit</div><div class="v">${money(T.grossProfit)}</div><div class="s">after expenses ${money(T.netProfit)}</div></div>
+        <div class="k"><div class="l">Money in</div><div class="v">${money(T.moneyIn)}</div><div class="s">cash ${money(T.money.cash)}</div></div>
+        <div class="k"><div class="l">Udhaar given</div><div class="v ${T.creditGiven ? 'amb' : ''}">${money(T.creditGiven)}</div><div class="s">recovered ${money(T.recovered)}</div></div>
+      </div>
+      <div class="card" style="margin-top:12px">
+        <div class="rr"><span>Yesterday</span><span class="v">${money(Y.netSales)} <span class="muted small">profit ${money(Y.grossProfit)}</span> ${cmp(T.netSales, Y.netSales)}</span></div>
+        <div class="rr"><span>This month</span><span class="v">${money(M.netSales)} <span class="muted small">profit ${money(M.grossProfit)}</span></span></div>
+        <div class="rr"><span>Month after expenses</span><span class="v ${M.netProfit < 0 ? 'neg' : 'pos'}">${money(M.netProfit)}</span></div>
+      </div>
+      <div class="card">
+        <a class="link" data-go="udhaar"><span class="ic">👥</span><div class="grow"><div class="b">Udhaar to collect</div><div class="small muted">${dueN} customer${dueN === 1 ? '' : 's'}</div></div><span class="b amb">${money(due)}</span><span class="ar">›</span></a>
+        <a class="link" data-go="stock" data-f="low"><span class="ic">📦</span><div class="grow"><div class="b">Stock</div><div class="small muted">${sv.count} items · ${sv.low} low · ${sv.out} out of stock${refill ? ' · ' + refill + ' to refill' : ''}</div></div><span class="ar">›</span></a>
+        <a class="link" data-go="stockval"><span class="ic">💰</span><div class="grow"><div class="b">Stock value (at cost)</div><div class="small muted">selling value ${money(sv.sale)}</div></div><span class="b">${money(sv.cost)}</span><span class="ar">›</span></a>
+      </div>
+      <div class="card" id="ntCard"><h3>📝 Parcel reminders <span class="grow"></span><span class="badge ${notes.length ? 'a' : ''}">${notes.length}</span></h3>
+        <div class="addrow"><input class="in" id="ntIn" maxlength="500" placeholder="e.g. Ali Lahore — 2 TCON, send tomorrow"><button class="btn pri" id="ntAdd">Add</button></div>
+        <div id="ntList">${notes.length ? notes.map(n => `<div class="nt ${n.wait ? 'wait' : ''}"><input type="checkbox" ${n.wait ? `data-del="${esc(n.id)}" title="Remove"` : `data-done="${esc(n.id)}"`}><div class="x">${esc(n.text)}<small>${n.wait ? '⏳ goes to the shop PC when it is online' : (n.phone ? '📱 ' : '') + 'added ' + fmtDate(n.ts)}</small></div></div>`).join('') : '<div class="muted small" style="padding:6px 0">Nothing waiting to be sent.</div>'}</div></div>
+      ${parcels.length ? `<div class="h1">Parcels</div><div class="list">${parcels.slice(0, 15).map(p => `<div class="li"><div class="grow"><div class="n">${esc(p.toName)} · ${esc(p.toCity)}</div><div class="sub">P${p.no}${p.saleNo ? ' · Bill #' + p.saleNo : ''} · ${esc(p.courier)} · ${fmtDate(p.ts)}</div></div><span class="badge ${P_STATUS[p.status][1]}">${P_STATUS[p.status][0]}</span></div>`).join('')}</div>` : ''}
+      <div class="h1" style="margin-top:14px">Latest bills</div>${billList([...S.sales.values()].sort((a, b) => b.ts - a.ts).slice(0, 6))}`;
+  },
+  stock() {
+    const q = lc(PH.q).trim(), f = PH.stockF;
+    let list = [...S.items.values()].filter(it => it.active !== false);
+    if (f === 'low') list = list.filter(it => num(it.qty) > 0 && num(it.qty) <= lowLevel(it));
+    if (f === 'out') list = list.filter(it => num(it.qty) <= 0);
+    if (f === 'refill') list = list.filter(needsRefill);
+    if (q) { const words = q.split(/\s+/); list = list.filter(it => { const h = lc([it.name, it.code, it.cat, placeText(it)].join(' ')); return words.every(w => h.includes(w)); }); }
+    list.sort((a, b) => a.name.localeCompare(b.name, undefined, { numeric: true }));
+    const shown = list.slice(0, 150);
+    return `<div class="search"><input class="in" id="sq" placeholder="Search item, part no. or box…" value="${esc(PH.q)}" autocomplete="off" inputmode="search"></div>
+      <div class="chips">${[['all', 'All'], ['low', 'Low'], ['out', 'Out of stock'], ['refill', 'Refill from reserve']].map(([k, l]) => `<button class="chip ${f === k ? 'on' : ''}" data-sf="${k}">${l}</button>`).join('')}</div>
+      <div class="small muted" style="margin:0 2px 8px">${list.length} item${list.length === 1 ? '' : 's'}${list.length > shown.length ? ' · showing ' + shown.length + ' — search to find more' : ''}</div>
+      ${shown.length ? `<div class="list">${shown.map(it => { const q0 = num(it.qty), res = resTotal(it); return `<div class="li tap" data-it="${esc(it.id)}"><div class="grow"><div class="n">${esc(it.name)}</div><div class="sub">${esc(placeText(it) || 'no box set')}${num(it.price) ? ' · ' + rs(it.price) : ''}</div></div>
+        <div class="r"><div class="q ${q0 <= 0 ? 'neg' : q0 <= lowLevel(it) ? 'amb' : ''}">${fmt(q0)}</div>${res ? `<div class="sub">${fmt(mainQty(it))} + ${fmt(res)} res.</div>` : ''}</div></div>`; }).join('')}</div>` : `<div class="list"><div class="empty">${noData() ? 'No data yet' : 'Nothing found'}</div></div>`}`;
+  },
+  udhaar() {
+    const bal = allBalances(), q = lc(PH.custQ).trim();
+    let list = [...S.customers.values()].filter(c => c.active !== false).map(c => ({ c, b: bal.get(c.id) || 0 }));
+    const due = list.filter(x => x.b > 0.5), total = due.reduce((a, x) => a + x.b, 0), adv = list.filter(x => x.b < -0.5);
+    if (q) list = list.filter(x => lc([x.c.name, x.c.phone, x.c.city].join(' ')).includes(q)); else list = [...due, ...adv];
+    list.sort((a, b) => b.b - a.b);
+    return `<div class="kp" style="margin-bottom:12px"><div class="k gold"><div class="l">To collect</div><div class="v amb">${money(total)}</div><div class="s">${due.length} customer${due.length === 1 ? '' : 's'}</div></div>
+      <div class="k"><div class="l">Advance with you</div><div class="v">${money(-adv.reduce((a, x) => a + x.b, 0))}</div><div class="s">${adv.length} customer${adv.length === 1 ? '' : 's'}</div></div></div>
+      <div class="search"><input class="in" id="cq" placeholder="Search customer, phone or city…" value="${esc(PH.custQ)}" autocomplete="off" inputmode="search"></div>
+      ${list.length ? `<div class="list">${list.map(({ c, b }) => `<div class="li tap" data-cu="${esc(c.id)}"><div class="grow"><div class="n">${esc(c.name)}</div><div class="sub">${esc([c.phone, c.city].filter(Boolean).join(' · ') || '—')}</div></div><div class="r"><div class="q ${b > 0.5 ? 'amb' : b < -0.5 ? 'pos' : ''}" style="font-size:16px">${money(Math.abs(b))}</div><div class="sub">${b > 0.5 ? 'to collect' : b < -0.5 ? 'advance' : 'clear'}</div></div></div>`).join('')}</div>` : `<div class="list"><div class="empty">${q ? 'Nothing found' : 'No udhaar — everyone is clear 👍'}</div></div>`}`;
+  },
+  bills() {
+    const d = PH.day, list = [...S.sales.values()].filter(s => s.day === d).sort((a, b) => b.ts - a.ts), R = report(d, d);
+    return `<div class="card row" style="padding:8px"><button class="btn sm" id="dPrev">‹</button><input class="in grow" type="date" id="dPick" value="${d}" max="${dayKey()}" style="text-align:center;padding:8px"><button class="btn sm" id="dNext" ${d >= dayKey() ? 'disabled' : ''}>›</button></div>
+      <div class="kp" style="margin-bottom:12px"><div class="k"><div class="l">Sales</div><div class="v">${money(R.netSales)}</div><div class="s">${R.bills} bills</div></div><div class="k"><div class="l">Profit</div><div class="v">${money(R.grossProfit)}</div><div class="s">money in ${money(R.moneyIn)}</div></div></div>
+      ${billList(list) || `<div class="list"><div class="empty">No bills on ${fmtDate(d)}</div></div>`}`;
+  },
+  reports() {
+    const [from, to] = periodRange(PH.period, PH.from, PH.to), R = report(from, to);
+    const top = [...R.items.values()].filter(x => x.sales > 0).sort((a, b) => b.sales - a.sales).slice(0, 10);
+    const rr = (a, b, cls = '') => `<div class="rr ${cls}"><span>${a}</span><span class="v">${b}</span></div>`;
+    return `<div class="chips">${PERIODS.filter(([k]) => k !== 'all').map(([k, l]) => `<button class="chip ${PH.period === k ? 'on' : ''}" data-p="${k}">${l}</button>`).join('')}</div>
+      ${PH.period === 'custom' ? `<div class="card row" style="padding:8px"><input class="in" type="date" id="rF" value="${from}"><span>to</span><input class="in" type="date" id="rT" value="${to}"></div>` : ''}
+      <div class="small muted" style="margin:0 2px 8px">${from === to ? fmtDate(from) : fmtDate(from) + ' – ' + fmtDate(to)}</div>
+      <div class="kp"><div class="k hero"><div class="l">Net sales</div><div class="v">${money(R.netSales)}</div><div class="s">${R.bills} bills · ${fmt(R.qty)} pcs</div></div>
+        <div class="k hero"><div class="l">Gross profit</div><div class="v">${money(R.grossProfit)}</div><div class="s">margin ${R.margin.toFixed(1)}%</div></div></div>
+      <div class="card" style="margin-top:12px">
+        ${rr('Sales before returns', money(R.sales))}${rr('Discount given', money(R.disc))}${rr('Returns', '−' + money(R.retAmt))}${rr('Cost of items sold', money(R.netCogs))}${rr('Damage / loss', money(R.damage))}
+        ${rr('Gross profit', money(R.grossProfit), 'big')}${rr('Expenses', '−' + money(R.expenses))}${rr('Net profit', `<span class="${R.netProfit < 0 ? 'neg' : 'pos'}">${money(R.netProfit)}</span>`, 'big')}</div>
+      <div class="card"><h3>Money in</h3>${Object.entries(R.money).map(([k, v]) => rr(METHODS[k], money(v))).join('')}${rr('Total', money(R.moneyIn), 'big')}${rr('Udhaar given', money(R.creditGiven))}${rr('Udhaar recovered', money(R.recovered))}${rr('New stock bought', money(R.stockInValue))}</div>
+      ${top.length ? `<div class="card"><h3>Top items</h3>${top.map(x => rr(`${esc(x.name)} <span class="muted small">× ${fmt(x.qty)}</span>`, money(x.sales))).join('')}</div>` : ''}
+      ${R.expCats.size ? `<div class="card"><h3>Expenses</h3>${[...R.expCats.entries()].sort((a, b) => b[1] - a[1]).map(([k, v]) => rr(esc(k), money(v))).join('')}</div>` : ''}`;
+  },
+  stockval() {
+    const sv = stockValue(), list = [...S.items.values()].filter(it => it.active !== false && num(it.qty) > 0).sort((a, b) => num(b.qty) * num(b.cost) - num(a.qty) * num(a.cost)).slice(0, 30);
+    return `<div class="kp"><div class="k hero"><div class="l">Stock at cost</div><div class="v">${money(sv.cost)}</div><div class="s">${fmt(sv.qty)} pcs</div></div><div class="k"><div class="l">At selling price</div><div class="v">${money(sv.sale)}</div><div class="s">${sv.count} items</div></div></div>
+      <div class="h1" style="margin-top:14px">Biggest stock (by cost)</div><div class="list">${list.map(it => `<div class="li tap" data-it="${esc(it.id)}"><div class="grow"><div class="n">${esc(it.name)}</div><div class="sub">${fmt(it.qty)} pcs × ${rs(it.cost)}</div></div><div class="r b">${money(num(it.qty) * num(it.cost))}</div></div>`).join('') || '<div class="empty">No stock</div>'}</div>`;
+  }
+};
+function billList(list) {
+  if (!list.length) return '';
+  return `<div class="list">${list.map(s => `<div class="li tap" data-bill="${esc(s.id)}"><div class="grow"><div class="n">#${s.no} · ${esc(s.custName || 'Walk-in')}</div><div class="sub">${fmtTime(s.ts)}${dayKey(s.ts) !== dayKey() ? ' · ' + fmtDate(s.ts) : ''} · ${s.lines.length} item${s.lines.length === 1 ? '' : 's'}${s.method ? ' · ' + (METHODS[s.method] || s.method) : ''}</div></div>
+    <div class="r"><div class="b">${money(s.total)}</div>${s.void ? '<span class="badge d">cancelled</span>' : s.credit > 0 ? `<span class="badge a">udhaar ${money(s.credit)}</span>` : '<span class="badge g">paid</span>'}</div></div>`).join('')}</div>`;
+}
+/* ---------- detail sheets ---------- */
+function itemSheet(id) {
+  const it = S.items.get(id); if (!it) return;
+  const st = itemStats(id), d30 = addDays(dayKey(), -29); let s30 = 0;
+  for (const s of S.sales.values()) if (!s.void && s.day >= d30) for (const l of s.lines) if (l.itemId === id) s30 += l.qty;
+  sheet(`<h2>${esc(it.name)}</h2><div class="muted small">${esc([it.code, it.cat].filter(Boolean).join(' · '))}</div>
+    <div class="kp" style="margin-top:12px"><div class="k hero"><div class="l">In stock</div><div class="v">${fmt(it.qty)}</div><div class="s">low level ${fmt(lowLevel(it))}</div></div><div class="k"><div class="l">Price</div><div class="v">${rs(it.price)}</div><div class="s">cost ${rs(it.cost)}</div></div></div>
+    <div class="h1" style="margin-top:14px">Where it is</div>${itemPlaces(it).filter(p => p.place || p.qty).map(p => `<div class="place"><span>${p.kind === 'main' ? '📦 ' : '🗄️ '}${esc(p.place || 'No box set')}<div class="small muted">${p.kind === 'main' ? 'main box' : 'reserve'}</div></span><b>${fmt(p.qty)}</b></div>`).join('')}
+    <div class="card" style="margin-top:12px">${[['Sold in last 30 days', fmt(s30) + ' pcs'], ['Sold all time', fmt(st.sold) + ' pcs'], ['Profit all time', money(st.profit)], ['Last sold', st.lastSold ? fmtDT(st.lastSold) : '—'], ['Last bought', st.lastIn ? fmtDT(st.lastIn) : '—']].map(([a, b]) => `<div class="rr"><span>${a}</span><span class="v">${b}</span></div>`).join('')}</div>`);
+}
+function custSheet(id) {
+  const c = S.customers.get(id); if (!c) return;
+  const rows = custLedger(id), bal = custBalance(id), last = rows.slice(-25).reverse();
+  const msg = `Assalam o Alaikum ${c.name}, your balance with ${S.settings.shop} is ${rs(bal)}. Thank you.`;
+  sheet(`<h2>${esc(c.name)}</h2><div class="muted small">${esc([c.phone, c.city].filter(Boolean).join(' · '))}</div>
+    <div class="k ${bal > 0.5 ? 'gold' : ''}" style="margin-top:12px"><div class="l">${bal > 0.5 ? 'To collect' : bal < -0.5 ? 'Advance with you' : 'Balance'}</div><div class="v ${bal > 0.5 ? 'amb' : ''}">${money(Math.abs(bal))}</div></div>
+    ${c.phone ? `<div class="row" style="margin-top:10px"><a class="btn full" href="tel:${esc(String(c.phone).replace(/[^\d+]/g, ''))}" style="text-align:center;text-decoration:none">📞 Call</a><a class="btn gold full" href="${waLink(c.phone, msg)}" target="_blank" rel="noopener" style="text-align:center;text-decoration:none">💬 WhatsApp balance</a></div>` : ''}
+    <div class="h1" style="margin-top:14px">Account (latest first)</div>
+    <table class="tbl">${last.map(r => `<tr><td><div class="b small">${esc(r.detail)}</div><div class="small muted">${fmtDT(r.ts)}</div></td><td class="n small">${r.dr ? '+' + fmt(r.dr) : '−' + fmt(r.cr)}</td><td class="n b small">${fmt(r.bal)}</td></tr>`).join('') || '<tr><td class="muted">No entries</td></tr>'}</table>`);
+}
+function billSheet(id) {
+  const s = S.sales.get(id); if (!s) return;
+  const n = saleNet(s);
+  sheet(`<h2>Bill #${s.no} ${s.void ? '<span class="badge d">cancelled</span>' : ''}</h2><div class="muted small">${fmtDT(s.ts)} · ${esc(s.custName || 'Walk-in customer')}${s.custPhone ? ' · ' + esc(s.custPhone) : ''}</div>
+    <table class="tbl">${s.lines.map(l => `<tr><td><div class="b">${esc(l.name)}</div><div class="small muted">${fmt(l.qty)} × ${fmt(l.price)}</div></td><td class="n b">${fmt(l.amt)}</td></tr>`).join('')}
+      ${s.disc ? `<tr><td>Discount</td><td class="n">−${fmt(s.disc)}</td></tr>` : ''}${s.deliv ? `<tr><td>Delivery</td><td class="n">${fmt(s.deliv)}</td></tr>` : ''}
+      <tr class="tot"><td>Total</td><td class="n">${rs(s.total)}</td></tr>
+      ${s.recv ? `<tr><td>Paid (${esc(METHODS[s.method] || s.method)})</td><td class="n">${fmt(s.recv)}</td></tr>` : ''}${s.credit ? `<tr><td class="amb b">Udhaar</td><td class="n amb b">${fmt(s.credit)}</td></tr>` : ''}
+      ${n.refund ? `<tr><td>Returned later</td><td class="n">−${fmt(n.refund)}</td></tr>` : ''}
+      <tr><td class="muted">Profit on this bill</td><td class="n ${n.profit < 0 ? 'neg' : 'pos'} b">${fmt(n.profit)}</td></tr></table>
+    ${s.note ? `<div class="banner" style="margin-top:10px">Note: ${esc(s.note)}</div>` : ''}`);
+}
+/* ---------- events ---------- */
+const BIND = {
+  home() {
+    $$('[data-go]').forEach(a => a.onclick = () => { PH.tab = a.dataset.go; if (a.dataset.f) PH.stockF = a.dataset.f; window.scrollTo(0, 0); renderPage(); });
+    const add = async () => {
+      const i = $('#ntIn'), t = i.value.trim(); if (!t) return i.focus();
+      const b = $('#ntAdd'); b.disabled = true;
+      try { const { data } = await CloudAPI.api('pos_inbox?select=id,kind,text,ref,created_at', { method: 'POST', body: { kind: 'note', text: t.slice(0, 500) }, headers: { Prefer: 'return=representation' } }); PH.inbox.push(...(data || [])); toast('Reminder sent to the shop PC'); renderPage(); }
+      catch (e) { toast(e.message, 'err'); b.disabled = false; }
+    };
+    $('#ntAdd').onclick = add;
+    $('#ntIn').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); add(); } });
+    $$('[data-done]').forEach(c => c.onchange = async () => {
+      try { const { data } = await CloudAPI.api('pos_inbox?select=id,kind,text,ref,created_at', { method: 'POST', body: { kind: 'done', ref: c.dataset.done, text: '' }, headers: { Prefer: 'return=representation' } }); PH.inbox.push(...(data || [])); toast('Marked done'); renderPage(); }
+      catch (e) { c.checked = false; toast(e.message, 'err'); }
+    });
+    $$('[data-del]').forEach(c => c.onchange = async () => {
+      try { await CloudAPI.api('pos_inbox?id=eq.' + encodeURIComponent(c.dataset.del), { method: 'DELETE', headers: { Prefer: 'return=minimal' } }); PH.inbox = PH.inbox.filter(m => m.id !== c.dataset.del); renderPage(); }
+      catch (e) { c.checked = false; toast(e.message, 'err'); }
+    });
+    bindRows();
+  },
+  stock() {
+    $('#sq').addEventListener('input', debounce(e => { PH.q = e.target.value; renderPage(); }, 200));
+    $$('[data-sf]').forEach(b => b.onclick = () => { PH.stockF = b.dataset.sf; renderPage(); });
+    bindRows();
+  },
+  udhaar() { $('#cq').addEventListener('input', debounce(e => { PH.custQ = e.target.value; renderPage(); }, 200)); bindRows(); },
+  bills() {
+    $('#dPrev').onclick = () => { PH.day = addDays(PH.day, -1); renderPage(); };
+    $('#dNext').onclick = () => { if (PH.day < dayKey()) { PH.day = addDays(PH.day, 1); renderPage(); } };
+    $('#dPick').onchange = e => { if (e.target.value) { PH.day = e.target.value; renderPage(); } };
+    bindRows();
+  },
+  reports() {
+    $$('[data-p]').forEach(b => b.onclick = () => { PH.period = b.dataset.p; if (PH.period === 'custom' && !PH.from) { PH.from = addDays(dayKey(), -6); PH.to = dayKey(); } renderPage(); });
+    if ($('#rF')) { $('#rF').onchange = e => { PH.from = e.target.value; renderPage(); }; $('#rT').onchange = e => { PH.to = e.target.value; renderPage(); }; }
+  },
+  stockval() { bindRows(); }
+};
+function bindRows() {
+  $$('[data-it]').forEach(r => r.onclick = () => itemSheet(r.dataset.it));
+  $$('[data-cu]').forEach(r => r.onclick = () => custSheet(r.dataset.cu));
+  $$('[data-bill]').forEach(r => r.onclick = () => billSheet(r.dataset.bill));
+}
+
+/* ---------- start ---------- */
+let started = false;
+async function start() {
+  frame(); await loadCache(); renderPage(); pull(true);
+  if (started) return; started = true;
+  setInterval(() => { if (document.visibilityState === 'visible') pull(true); }, 60e3);
+  document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') pull(true); });
+  window.addEventListener('online', () => pull(true));
+}
+(async () => {
+  const code = new URLSearchParams(location.hash.slice(1)).get('c');
+  if (code) {
+    PH.link = CloudAPI.readCode(code);
+    history.replaceState(null, '', location.pathname + location.search); // keep the address bar clean
+    if (PH.link) { try { localStorage.setItem('shakeelpos:link', JSON.stringify(PH.link)); } catch (e) { } }
+  }
+  CloudAPI.load();
+  if (PH.link && CloudAPI.on && (CloudAPI.c.url !== CloudAPI.cleanUrl(PH.link.u) || CloudAPI.c.key !== PH.link.k)) { CloudAPI.signOut(); await Cache.clear().catch(() => { }); } // a link for another shop
+  if (!CloudAPI.on) return renderLogin();
+  await start();
+})();
+</script>
+</body>
+</html>
